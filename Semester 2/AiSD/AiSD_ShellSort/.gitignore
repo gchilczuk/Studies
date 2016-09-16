@@ -1,0 +1,5 @@
+.ide*
+*iml
+out/
+*.7z
+*.pdf

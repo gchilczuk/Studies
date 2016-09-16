@@ -1,0 +1,8 @@
+ scanner.close();
+        for (Node n:list){
+            counter.put(n.ch, n.count);
+        }
+//        System.out.println("Drukuję zawartość listy: "+list);
+        return list;
+    }
+    
