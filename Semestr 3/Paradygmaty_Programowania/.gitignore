@@ -1,0 +1,8 @@
+*/_build
+*/.paths
+*/.project
+*/.settings
+*/.classpath
+*/bin
+*/wyk3.ml
+
