@@ -53,3 +53,18 @@ def mergesort[A] (f:(A=>A=>Boolean)) (list:List[A]):List[A] =
     merge (f) (mergesort(f)(l1)) (mergesort(f)(l2))
   }
 }
+
+
+def merges2[A] (f:(A=>A=>Boolean)) (li:List[A]):List[A] = {
+  def sort (list:List[List[A]]):List[List[A]] =
+    list match {
+      case Nil => Nil
+      case List(a) => List(a)
+      case h1::h2::t => sort(merge(f)(h1)(h2)::sort(t))
+    }
+  val List(x)= sort (li map (x=>List(x)))
+  x    
+}
+
+merges2 ((x:Int) => (y:Int) => x < y) (List(8,2,1,3,0))
+merges2 ((x:(Int,Int)) => (y:(Int,Int)) => x._1 <= y._1) (List((33,1),(-2,1),(1,1),(1,2),(2,1),(-15,1)))

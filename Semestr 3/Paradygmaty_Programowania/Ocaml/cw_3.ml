@@ -64,4 +64,13 @@ let rec merge_sort f list =
 	| l -> let l1,l2 = halve list in merge f (merge_sort f l1) (merge_sort f l2)
 
 
+let merges2 f li = 
+	let rec sort = function 
+		| [] -> []
+		| [a] -> [a]
+		| h1::h2::t -> sort(merge f h1 h2::sort t)
+	in let [x] = sort(List.map (function x -> [x]) li) in x;;
 
+
+merges2 ( < ) [8;2;1;3;0]
+merges2 (fun x y -> fst x <= fst y) [(33,1);(-2,1);(1,1);(1,2);(2,1);(-15,1)];;
