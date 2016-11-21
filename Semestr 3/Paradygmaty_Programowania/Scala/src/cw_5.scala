@@ -11,11 +11,11 @@ def lrepeat[A] (k:Int,s:Stream[A]) = {
 }
 
 // zadanie 2
-def fibo(a:Int,b:Int):Stream[Int] =
+def fibo(a:Int,b:BigInt):Stream[BigInt] =
   Stream.cons(a, fibo(b, a+b))
 
 val lfib = {
-  def fibo(a:Int,b:Int):Stream[Int] ={
+  def fibo(a:BigInt,b:BigInt):Stream[BigInt] ={
     Stream.cons(a, fibo(b, a+b))}
   fibo(0,1)
 }
@@ -31,7 +31,8 @@ def lTree (n:Int):lBT[Int] =
 
 def breadth[A] (lbt:lBT[A]) = {
     def bb (queue:List[lBT[A]]):Stream[A] = 
-        queue match {            case Nil => Stream.empty
+        queue match {            
+            case Nil => Stream.empty
             case LNode(v, lt, rt)::t => Stream.cons(v,bb(t++List(lt(), rt())))
             case LEmpty::t => bb(t)
        }
