@@ -31,8 +31,7 @@ def lTree (n:Int):lBT[Int] =
 
 def breadth[A] (lbt:lBT[A]) = {
     def bb (queue:List[lBT[A]]):Stream[A] = 
-        queue match {
-            case Nil => Stream.empty
+        queue match {            case Nil => Stream.empty
             case LNode(v, lt, rt)::t => Stream.cons(v,bb(t++List(lt(), rt())))
             case LEmpty::t => bb(t)
        }
