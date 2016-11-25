@@ -8,20 +8,21 @@ using std::to_string;
 
 class CPoint2D {
 private:
-    double *pd_coordx;
-    double *pd_coordy;
+    double *pd_x;
+    double *pd_y;
+
 public:
-    CPoint2D(double pdCoordX, double pdCoordY);
-    CPoint2D(CPoint2D &pcModel);
 
-    CPoint2D();
-
+//    CPoint2D();
+    CPoint2D(double dX, double dY);
+    CPoint2D(const CPoint2D &pcModel);
     ~CPoint2D();
 
-    double *getX() const;
-    double *getY() const;
-    void setX(double *pdCoordX);
-    void setY(double *pdCoordY);
+    double dGetX() const;
+    double dGetY() const;
+
+    void setX(double dX);
+    void setY(double dY);
 
     string sToString();
 
