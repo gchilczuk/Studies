@@ -34,7 +34,7 @@ let lrepeat k lli =
 (* zadanie 2 *)
 let lfib = 
 	let rec fibo (a,b) = LCons(a, function () -> fibo(b,a+b))
-	in fibo(0,1)
+	in fibo(0,1);;
 	
 
 (* zadanie 3 *)
@@ -44,7 +44,7 @@ type 'a lBT =
 
 
 let rec lTree n = 
-	LNode (n, (function() -> lTree(2*n)), (function() -> lTree(2*n+1)))
+	LNode (n, (function() -> lTree(2*n)), (function() -> lTree(2*n+1)));;
 
 let breadth lbt =
 	let rec bb = function 

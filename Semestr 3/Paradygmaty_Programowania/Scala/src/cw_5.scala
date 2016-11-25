@@ -11,7 +11,7 @@ def lrepeat[A] (k:Int,s:Stream[A]) = {
 }
 
 // zadanie 2
-def fibo(a:Int,b:BigInt):Stream[BigInt] =
+def fibo(a:BigInt,b:BigInt):Stream[BigInt] =
   Stream.cons(a, fibo(b, a+b))
 
 val lfib = {
