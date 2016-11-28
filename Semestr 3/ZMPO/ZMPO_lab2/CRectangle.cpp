@@ -8,7 +8,7 @@ CRectangle::CRectangle(CPoint2D &pcPointOne, CPoint2D &pcPointTwo) :
 
 CRectangle::CRectangle(double pdXOne, double pdYOne, double pdXTwo, double pdYTwo):
         pc_point_one (new CPoint2D(pdXOne, pdYOne)),
-        pc_point_two ( new CPoint2D(pdXTwo, pdYTwo)){} // CRectangle::CRectangle(double *pdXOne, double *pdYOne, double *pdXTwo, double *pdYTwo) {
+        pc_point_two (new CPoint2D(pdXTwo, pdYTwo)){} // CRectangle::CRectangle(double *pdXOne, double *pdYOne, double *pdXTwo, double *pdYTwo) {
 
 
 CRectangle::CRectangle(CRectangle &pcModel):

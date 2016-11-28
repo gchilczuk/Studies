@@ -19,6 +19,7 @@ int main() {
     delete tui;
     delete command;
 
+
     cout << "Koniec programu";
 
 }
