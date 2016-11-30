@@ -20,13 +20,9 @@ let niem lista =
 	if lista = [] then [] else
 	let a, b = fold_right pier lista ([], []) in a::b 
 			
-
-
-
-
 (* zadanie 3 *)
 
-let rest (reszta, wydane) x =
+let rec rest (reszta, wydane) x =
 	if x > reszta then (reszta, wydane)
 	else let re, xs = (rest (reszta-x, x::wydane) x) in 
 			(re, xs);;
