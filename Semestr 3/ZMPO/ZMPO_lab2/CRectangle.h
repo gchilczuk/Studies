@@ -10,14 +10,14 @@ using std::abs;
 
 class CRectangle {
 private:
-    CPoint2D *pc_point_one;
-    CPoint2D *pc_point_two;
+    CPoint2D pc_point_one;
+    CPoint2D pc_point_two;
 public:
-    //    CRectangle();
+//    CRectangle();
     CRectangle(double pdXOne, double pdYOne, double pdXTwo, double pdYTwo);
-    CRectangle(CPoint2D &pcPointOne, CPoint2D &pcPointTwo);
-    CRectangle(CRectangle &pcModel);
-    ~CRectangle();
+    CRectangle(const CPoint2D &pcPointOne, const CPoint2D &pcPointTwo);
+    CRectangle(const CRectangle &pcModel);
+//    ~CRectangle();
 
     double dArea();
     string sToString();

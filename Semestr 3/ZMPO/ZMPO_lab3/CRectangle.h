@@ -12,9 +12,8 @@ using std::max;
 
 class CRectangle {
 private:
-    bool b_tmp;
-    CPoint2D *pc_point_one;
-    CPoint2D *pc_point_two;
+    CPoint2D pc_point_one;
+    CPoint2D pc_point_two;
     double d_min_x();
     double d_min_y();
     double d_max_x();
@@ -22,11 +21,11 @@ private:
     double *dtab_minmax(CRectangle &pcOne, CRectangle &pcTwo);
 
 public:
-    //    CRectangle();
+//    CRectangle();
     CRectangle(double pdXOne, double pdYOne, double pdXTwo, double pdYTwo);
-    CRectangle(CPoint2D &pcPointOne, CPoint2D &pcPointTwo);
-    CRectangle(CRectangle &pcOther);
-    ~CRectangle();
+    CRectangle(const CPoint2D &pcPointOne, const CPoint2D &pcPointTwo);
+    CRectangle(const CRectangle &pcModel);
+//    ~CRectangle();
 
     double dArea();
     string sToString();
