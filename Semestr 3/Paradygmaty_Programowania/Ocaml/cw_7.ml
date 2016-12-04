@@ -14,23 +14,24 @@ module type QUEUE_FUN =
 module QL : QUEUE_FUN =
 	struct
 		
-		type 'a t = 'a list
+		type 'a t = Queue of 'a list
 		exception Empty of string
 		
-		let empty() = []
+		let empty() = Queue []
 		
 		let enqueue = function
-			| (e,q) -> q@[e]
+			| (e,Queue q) -> Queue (q@[e])
 
-		let dequeue = function
-			| [] -> []
-			| h::xs -> xs 
+		let dequeue = function 
+			| Queue [] -> Queue []
+			| Queue (h::xs) -> Queue xs
 		
 		let first = function
-			| [] -> raise (Empty "module qL:first")
-			| h::xs -> h
+			| Queue [] -> raise (Empty "module qL:first")
+			| Queue (h::xs)  -> h
 		
-		let isEmpty q = q = []
+		let isEmpty = function
+			| Queue list -> list = []
 	
 	end;;
 
@@ -38,25 +39,26 @@ module QL : QUEUE_FUN =
 module QDL : QUEUE_FUN =
 	struct
 		
-		type 'a t = 'a list * 'a list
+		type 'a t = Queue of 'a list * 'a list
 		exception Empty of string
 		
-		let empty() = [],[]
+		let empty() = Queue ([],[])
 		
 		let enqueue = function
-			| e, ([],s) -> [e], []
-			| e, (f,s) -> f, e::s
+			| (e,Queue ([],s)) -> Queue ([e], [])
+			| (e,Queue (f,s)) -> Queue (f, e::s)
 		
 		let dequeue = function
-			| [],[] -> [],[]
-			| [x],s -> List.rev s, []
-			| h::xs,s -> xs,s 
+			| Queue ([],[]) -> Queue ([],[])
+			| Queue ([x],s) -> Queue (List.rev s, [])
+			| Queue (h::xs,s) -> Queue (xs,s) 
 		
 		let first = function
-			| [],[] -> raise (Empty "module QL:first")
-			| h::xs, s  -> h
+			| Queue ([],[]) -> raise (Empty "module QL:first")
+			| Queue (h::xs, s)  -> h
 		
-		let isEmpty (f,s) = f = []
+		let isEmpty = function
+			| Queue (f,s) -> f = []
 	
 	end;;
 
