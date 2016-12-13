@@ -36,25 +36,25 @@ string CRectangle::sToString() {
 //    delete pc_point_two;
 //}
 
-CRectangle &CRectangle::operator=(CRectangle &pcOther) {
+CRectangle &CRectangle::operator=(CRectangle pcOther) {
 //    delete pc_point_one;
 //    delete pc_point_two;
     pc_point_one = pcOther.pc_point_one;
     pc_point_two = pcOther.pc_point_two;
-    return (*this);
+    return *this;
 }
 
-CRectangle &CRectangle::operator+(CRectangle &pcOther) {
+CRectangle CRectangle::operator+(CRectangle &pcOther) {
     CRectangle pc_tmp(*this);
-    pc_tmp.operator+(pcOther.pc_point_one);
-    pc_tmp.operator+(pcOther.pc_point_two);
+    pc_tmp = (pc_tmp + pcOther.pc_point_one);
+    pc_tmp = (pc_tmp + pcOther.pc_point_two);
 //    double *minmax = dtab_minmax(*this, pcOther);
 //    CRectangle pc_tmp = CRectangle(minmax[0], minmax[1], minmax[2], minmax[3]);
 //    delete[] minmax;
     return pc_tmp;
 }
 
-CRectangle &CRectangle::operator+(CPoint2D &pcPoint) {
+CRectangle CRectangle::operator+(CPoint2D &pcPoint) {
     double px = pcPoint.dGetX(), py = pcPoint.dGetY();
     double minx = min(px, d_min_x()), miny = min(py, d_min_y());
     double maxx = max(px, d_max_x()), maxy = max(py, d_max_y());
@@ -81,15 +81,6 @@ double CRectangle::d_max_x() {
 double CRectangle::d_max_y() {
     return pc_point_two.dGetY();
 //    return max(pc_point_one.dGetY(), pc_point_two.dGetY());
-}
-
-double *CRectangle::dtab_minmax(CRectangle &pcOne, CRectangle &pcTwo) {
-    double *minmax = new double[4];
-    minmax[0] = min(pcOne.d_min_x(), pcTwo.d_min_x());
-    minmax[1] = min(pcOne.d_min_y(), pcTwo.d_min_y());
-    minmax[2] = max(pcOne.d_max_x(), pcTwo.d_max_x());
-    minmax[3] = max(pcOne.d_max_y(), pcTwo.d_max_y());
-    return minmax;
 }
 
 

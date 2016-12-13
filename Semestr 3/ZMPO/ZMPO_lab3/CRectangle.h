@@ -3,12 +3,12 @@
 
 #include "CPoint2D.h"
 #include <iostream>
+#include <ostream>
 #include <cmath>
 
 using std::abs;
 using std::min;
 using std::max;
-
 
 class CRectangle {
 private:
@@ -18,7 +18,6 @@ private:
     double d_min_y();
     double d_max_x();
     double d_max_y();
-    double *dtab_minmax(CRectangle &pcOne, CRectangle &pcTwo);
 
 public:
 //    CRectangle();
@@ -30,9 +29,10 @@ public:
     double dArea();
     string sToString();
 
-    CRectangle &operator=(CRectangle &pcOther);
-    CRectangle &operator+(CRectangle &pcOther);
-    CRectangle &operator+(CPoint2D &pcPoint);
+    CRectangle &operator=(CRectangle pcOther);
+    CRectangle operator+(CRectangle &pcOther);
+    CRectangle operator+(CPoint2D &pcPoint);
+//    CRectangle &operator<<(ostream& os, )
 
 };
 

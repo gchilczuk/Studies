@@ -218,7 +218,7 @@ void CTUI::addPoint() {
     cin >> ir >> ip;
     cout << "!addPoint " << ir << " " << ip << endl;
     if (bIsRectangle(ir) && bIsPoint(ip)){
-        *rectangles[ir] = *rectangles[ir] + *points[ip];
+        rectangles[ir] = new CRectangle(*rectangles[ir] + *points[ip]);
         wyn = "DONE";
     }
     cout << wyn << endl;
@@ -231,7 +231,7 @@ void CTUI::addRect() {
     cin >> ir >> irp;
     cout << "!addRect " << ir << " " << irp << endl;
     if (bIsRectangle(ir) && bIsRectangle(irp)){
-        *rectangles[ir] = *rectangles[ir] + *rectangles[irp];
+        rectangles[ir] = new CRectangle(*rectangles[ir] + *rectangles[irp]);
         wyn = "DONE";
     }
     cout << wyn << endl;

@@ -1,5 +1,5 @@
 // zadanie 1
-def whileLoop(warunek: =>Boolean, wyr: =>Unit):Unit = {
+def whileLoop(warunek: =>Boolean, wyr: =>Unit) {
   if (warunek)
   {wyr; whileLoop(warunek,wyr)}
 }
