@@ -1,9 +1,9 @@
 // zadanie 1
 
 class Time(var h:Int){ 
-if (h<0) hour = 0;
-def hour: Int = h
-def hour_=(x: Int) {
+if (h<0) h = 0;
+def hour = h // akcesor
+def hour_=(x: Int) { // mutator
 if (x<0) h=0 
 else h = x
 }
@@ -15,9 +15,9 @@ object Time{
 
 // zadanie 2 a
 
-
 class Time (var godz:Int, var min:Int){
   require(0<=godz && godz<24 && 0<=min && min<60)
+  override def toString = godz + ":" + min
   def time:(Int,Int) = (godz,min)
   def hour:Int = godz
   def minute:Int = min
@@ -41,6 +41,7 @@ class Time (var godz:Int, var min:Int){
 class Time (godz:Int, var min:Int){
   require(0<=godz && godz<24 && 0<=min && min<60)
   min = min + godz*60
+  override def toString = min/60 + ":"+min+":" + min%60
   def time:(Int,Int) = (min/60,min%60)
   def hour:Int = min/60
   def minute:Int = min%60
@@ -63,21 +64,40 @@ class Time (godz:Int, var min:Int){
 // zadanie 3
 
 class Pojazd(val producent:String, val model:String, 
-    val rok_prod:Int, var rejestr:String){
-  def this(producent:String, model:String, rok_prod:Int){
-    this(producent, model, rok_prod, "")
-  }
+    val rok_prod:Int=-1, var rejestr:String=""){
+//  def this(producent:String, model:String, rok_prod:Int){
+//    this(producent, model, rok_prod, "")
+//  }
   def this(producent:String, model:String, numer_rejestr:String){
     this(producent, model, -1, numer_rejestr)
-  }
-  def this(producent:String, model:String){
-    this(producent, model, -1, "")
-  }
+//  }
+//  def this(producent:String, model:String){
+//    this(producent, model, -1, "")
+//  }
 }
 
+// zadanie 4 
 
-
-class Test(val a:Int = 0, val b:Int = 1){
-  
-  
+object UzycieWyjatkow {
+  def main(args: Array[String]) {
+    try {
+      metoda1()
+    } catch {
+      case e: Exception =>
+        System.err.println(e.getMessage + "\n")
+        e.printStackTrace()
+    }
+  }
+ 
+  def metoda1() {
+    metoda2()
+  }
+ 
+  def metoda2() {
+    metoda3()
+  }
+ 
+  def metoda3() {
+    throw new Exception("Wyjatek zgloszony w metoda3")
+  }
 }
