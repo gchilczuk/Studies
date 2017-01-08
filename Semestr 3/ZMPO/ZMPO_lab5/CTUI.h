@@ -29,6 +29,7 @@ private:
     void perimeter_sum();
     void show();
     void show_all();
+    void del();
 
     bool bIsFigure(int iIndex);
     bool bIsPlace(int iIndex);

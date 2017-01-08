@@ -23,6 +23,10 @@ public:
     virtual double dObwod() = 0;
     virtual string sToString() { return nazwa;}
 
+    const string &getNazwa() const {
+        return nazwa;
+    }
+
 };
 
 

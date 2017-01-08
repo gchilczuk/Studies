@@ -51,6 +51,8 @@ bool CTUI::evaluateCommand(string &psCommand) {
         show();
     else if (com == "showAll" || com == "sA")
         show_all();
+    else if (com == "delete" || com == "del")
+        del();
     else{
         cout << "ERROR: Incorrect command" << endl;
         i_incorrect_commands++;
@@ -170,7 +172,7 @@ void CTUI::show() {
     string wyn = "ERROR";
     int ii;
     cin >> ii;
-    cout << "!show " << ii << endl;
+    cout << "!delete " << ii << endl;
     if (bIsFigure(ii)){
         wyn = tab[ii]->sToString();
     }
@@ -180,6 +182,23 @@ void CTUI::show() {
 void CTUI::show_all() {
     cout << "!showAll" << endl;
     show_tab(tab, i_len);
+}
+
+
+void CTUI::del() {
+    string wyn = "ERROR";
+    int ii;
+    cin >> ii;
+    cout << "!show " << ii << endl;
+    if (bIsFigure(ii)){
+        wyn = "Obiekt " + tab[ii]->getNazwa();
+        delete tab[ii];
+        tab[ii] = nullptr;
+        wyn += " został usunięty";
+    } else {
+        wyn = "Pod tym adresem nie ma żadnego obiektu";
+    }
+    cout << wyn << endl;
 }
 
 CTUI::CTUI() {
