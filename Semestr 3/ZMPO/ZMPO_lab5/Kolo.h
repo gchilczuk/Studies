@@ -5,15 +5,17 @@
 
 class Kolo : public Figura {
 
-private:
+protected:
     double d_promien;
 
 public:
-    Kolo(){nazwa = "Koło"; d_promien = STANDARD_A;}
-    Kolo(double dr){nazwa = "Koło"; d_promien = dr;}
-    Kolo(string sNazwa, double dr) {nazwa = sNazwa; d_promien = dr;}
-    double Kolo::dPole() {return d_promien * d_promien * M_PI;}
-    double Kolo::dObwod() {return 2 * M_PI * d_promien;}
+    Kolo():Figura("Koło anonimowe"){d_promien = STANDARD_A;}
+    Kolo(double dr):Figura("Koło anonimowe"){ d_promien = dr;}
+    Kolo(string sNazwa, double dr):Figura(sNazwa) {d_promien = dr;}
+
+    double dPole() {return d_promien * d_promien * M_PI;}
+    double dObwod() {return 2 * M_PI * d_promien;}
+
     string sToString(){
         return Figura::sToString() + ":  promień = " + to_string(d_promien) +
                "\n \t \t pole = " + to_string(dPole()) +
