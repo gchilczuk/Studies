@@ -11,9 +11,9 @@ public:
     Prostokat(double dA, double dB) : Kwadrat("Prostokąt anonimowy", dA){d_bok_b = dB;}
     Prostokat(string sNazwa, double dA, double dB) : Kwadrat(sNazwa, dA){d_bok_b = dB;}
 
-    double dPole(){ return d_bok_a * d_bok_b;}
+    virtual double dPole(){ return d_bok_a * d_bok_b;}
 
-    double dObwod(){ return 2*d_bok_a + 2*d_bok_b;}
+    virtual double dObwod(){ return 2*d_bok_a + 2*d_bok_b;}
 
     virtual string sToString(){
         return Figura::sToString() + ":  bok a = " + to_string(d_bok_a) +

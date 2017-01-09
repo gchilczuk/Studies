@@ -201,9 +201,7 @@ void CTUI::del() {
     cout << wyn << endl;
 }
 
-CTUI::CTUI() {
-
-}
+CTUI::CTUI() {}
 
 CTUI::~CTUI() {
     for (--i_len; i_len >= 0; i_len--)

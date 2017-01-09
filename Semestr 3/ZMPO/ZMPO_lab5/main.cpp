@@ -1,10 +1,9 @@
 #include "Kolo.h"
 #include "Trapez.h"
-//#include "Szablony.cpp"
 #include "CTUI.h"
+#include "Szablony.cpp"
 
-
-int main() {
+void zada(){
     CTUI *tui = new CTUI();
     string *command = new string();
     bool expr;
@@ -21,6 +20,30 @@ int main() {
     delete tui;
     delete command;
     cout << "Koniec programu";
+}
 
+void zadb(){
+    typedef complex<double> dcomp;
+
+    dcomp tt[] = { {0.0,1.0}, {0.0,1.0}};
+    int tab[] = {1,2,3};
+    char ttab[] = {'G', 'H'};
+    cout << suma(tt, 2);
+
+    cout << endl << "Egzample: " << endl;
+
+    Egzample ttt[3];
+    ttt[0] = Egzample(1);
+    ttt[1] = Egzample(2);
+    ttt[2] = Egzample(3);
+
+    cout << suma(ttt, 3);
+
+}
+
+
+int main() {
+//    zada();
+//    zadb();
     return 0;
 }
