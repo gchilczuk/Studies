@@ -9,7 +9,9 @@ protected:
 public:
     Kwadrat():Figura("Kwadrat"){ d_bok_a = STANDARD_A;}
     Kwadrat(double dA):Figura("Kwadrat"){d_bok_a = dA;}
-    Kwadrat(string sName, double dA):Figura(sName){ d_bok_a = dA;}
+    Kwadrat(string sName, double dA):Figura(sName){
+        if (dA < 0)  throw "Incorrect value dA";
+        d_bok_a = dA;}
 
     double dPole(){ return d_bok_a * d_bok_a;}
     double dObwod(){ return 4*d_bok_a;}

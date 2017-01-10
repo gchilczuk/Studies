@@ -9,7 +9,9 @@ protected:
 public:
     Prostokat(): Kwadrat("Prostokąt anonimowy", STANDARD_A){ d_bok_b = STANDARD_A;}
     Prostokat(double dA, double dB) : Kwadrat("Prostokąt anonimowy", dA){d_bok_b = dB;}
-    Prostokat(string sNazwa, double dA, double dB) : Kwadrat(sNazwa, dA){d_bok_b = dB;}
+    Prostokat(string sNazwa, double dA, double dB) : Kwadrat(sNazwa, dA){
+        if (dB < 0)  throw "Incorrect value dB";
+        d_bok_b = dB;}
 
     virtual double dPole(){ return d_bok_a * d_bok_b;}
 

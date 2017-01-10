@@ -86,8 +86,7 @@ void CTUI::createCircle() {
         wyn = "DONE";
     }
     cout << wyn << endl;
-}
-
+} // void CTUI::createCircle() {
 
 void CTUI::createSquare() {
     string wyn = "ERROR";
@@ -101,7 +100,8 @@ void CTUI::createSquare() {
         wyn = "DONE";
     }
     cout << wyn << endl;
-}
+} // void CTUI::createSquare() {
+
 
 void CTUI::createRectangle() {
     string wyn = "ERROR";
@@ -115,7 +115,7 @@ void CTUI::createRectangle() {
         wyn = "DONE";
     }
     cout << wyn << endl;
-}
+} // void CTUI::createRectangle() {
 
 void CTUI::createTrapeze() {
     string wyn = "ERROR";
@@ -130,7 +130,7 @@ void CTUI::createTrapeze() {
         wyn = "DONE";
     }
     cout << wyn << endl;
-}
+} // void CTUI::createTrapeze() {
 
 void CTUI::field() {
     string wyn = "ERROR";
@@ -141,7 +141,7 @@ void CTUI::field() {
         wyn = to_string(tab[ii]->dPole());
     }
     cout << wyn << endl;
-}
+} // void CTUI::field() {
 
 void CTUI::perimeter() {
     string wyn = "ERROR";
@@ -152,7 +152,7 @@ void CTUI::perimeter() {
         wyn = to_string(tab[ii]->dObwod());
     }
     cout << wyn << endl;
-}
+} // void CTUI::perimeter() {
 
 void CTUI::field_sum() {
     string wyn = "ERROR";
@@ -184,7 +184,6 @@ void CTUI::show_all() {
     show_tab(tab, i_len);
 }
 
-
 void CTUI::del() {
     string wyn = "ERROR";
     int ii;
@@ -199,7 +198,7 @@ void CTUI::del() {
         wyn = "Pod tym adresem nie ma żadnego obiektu";
     }
     cout << wyn << endl;
-}
+} // void CTUI::del() {
 
 CTUI::CTUI() {}
 
@@ -223,8 +222,9 @@ bool CTUI::boot(string &psCommand) {
             }
             wyn = true;
             cout << "fails > 3 → go 10 → DONE" << endl;
-        }
-        return wyn;}
+        } //         if (i_incorrect_commands > 3){
+        return wyn;
+    } //     if (psCommand != "go"){
     cin >> i_len;
     cout << "!go " << i_len << endl;
     if (i_len >= 0){
@@ -241,8 +241,4 @@ bool CTUI::boot(string &psCommand) {
         cout << "ERROR" << endl;
     }
     return wyn;
-}
-
-
-
-
+} // bool CTUI::boot(string &psCommand) {

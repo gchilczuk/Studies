@@ -3,8 +3,6 @@
 #define ZMPO_LAB5_CTUI_H
 
 #include "Kolo.h"
-#include "Kwadrat.h"
-#include "Prostokat.h"
 #include "Trapez.h"
 
 using std::cout;

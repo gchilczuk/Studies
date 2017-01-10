@@ -1,5 +1,5 @@
-#include "Kolo.h"
-#include "Trapez.h"
+//#include "Kolo.h"
+//#include "Trapez.h"
 #include "CTUI.h"
 #include "Szablony.cpp"
 
@@ -24,6 +24,7 @@ void zada(){
 
 void zadb(){
     typedef complex<double> dcomp;
+    cout << endl << "Complex: " << endl;
 
     dcomp tt[] = { {0.0,1.0}, {0.0,1.0}};
     int tab[] = {1,2,3};
