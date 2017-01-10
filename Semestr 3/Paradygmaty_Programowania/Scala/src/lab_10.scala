@@ -1,6 +1,5 @@
 class IncorrectDate(message: String = null) extends Exception(message)
 
-/*
 class DayInYear(private var dayy:Int, private var monthh:Int){
   if (dayy < 1) dayy = 0; 
   else if (dayy > 30){
@@ -38,7 +37,7 @@ class DayInYear(private var dayy:Int, private var monthh:Int){
 
 object DayInYear{
   def apply(dayy:Int, monthh:Int) = new DayInYear(dayy:Int, monthh:Int);
-}*/
+}
 
 // zadanie 2
 class DIY(var dni:Int,  monthh:Int){
@@ -75,9 +74,7 @@ object DIY{
   def apply(dayy:Int, monthh:Int) = new DIY(dayy:Int, monthh:Int);
 }
 
-
-/*
-
+// zadanie 3
 class Student(val indeks:Int, val imie:String,
     var nazwisko:String, var miasto:String = "", var dochody:Int = 0){
   override def toString = indeks+" | "+imie+" | "+nazwisko +"\n"+miasto + " | "+dochody;
@@ -86,4 +83,4 @@ class Student(val indeks:Int, val imie:String,
 new Student(123, "Adam", "Nowak");
 new Student(123, "Adam", "Nowak", "Wrocław");
 new Student(123, "Adam", "Nowak", "Wrocław", 2000);
-new Student(123, "Adam", "Nowak", dochody=2000);*/
+new Student(123, "Adam", "Nowak", dochody=2000);
