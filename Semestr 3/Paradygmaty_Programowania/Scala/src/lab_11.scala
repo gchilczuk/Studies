@@ -40,6 +40,11 @@ var color:Color = Color.BLACK
 override def toString = super.toString + " " + color
 }
 
+// NIŻEJ SĄ TESTY
+// ABY BYŁY DOBRZE CZYTELNE KAŻDY BLOK TESTY
+// (ODDZIELONE PUSTĄ LINIĄ)
+// POWIENIEN ZOSTAĆ WYWOŁANY ODDZIELNIE
+
 var QofPoint = Queue(new Point())
 var QofPixel = Queue(new Pixel(2,2))
 
