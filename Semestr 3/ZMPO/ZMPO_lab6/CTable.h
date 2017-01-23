@@ -2,10 +2,13 @@
 #define CTABLE_H
 #include <string>
 #include <iostream>
+#include <sstream>
+#include "Osoba.h"
 
 using std::string;
 using std::cout;
 using std::endl;
+using std::stringstream;
 
 template <class T> class CTable {
 private:
@@ -16,6 +19,7 @@ private:
     const string DEFAULT_NAME = "Unnamed_table";
     T DEFAULT_VALUE = T();
     void defVal();
+    static string from_out_to_str(T &obj);
 
 public:
     CTable();
@@ -36,10 +40,14 @@ public:
     const string &sGetS_name() const;
 
     void vSetTable(CTable & pcOther);
+    string sToString();
 
     template <class S> friend std::ostream &operator<<(std::ostream &os, const CTable<S> &table);
+    friend class CTUI;
 
 };
+
+
 template <class T> void CTable<T>::defVal() {
     for (int i = 0; i < i_table_size; i++){
         p_table[i] = DEFAULT_VALUE;
@@ -145,5 +153,21 @@ template <class T> const string &CTable<T>::sGetS_name() const {
     return s_name;
 }
 
+template <class T> string CTable<T>::sToString() {
 
-#endif //CTABLE_H
+    string string1 =  s_name + " len: " + std::to_string(i_table_size) + " values: ";
+    for (int i = 0; i < i_table_size-1; i++){
+        string1 += from_out_to_str(p_table[i]) + ", ";
+    }
+    string1 += from_out_to_str(p_table[i_table_size-1]);
+    return string1;
+}
+
+template <class T> string CTable<T>::from_out_to_str(T &obj) {
+    stringstream stream;
+    stream << obj;
+    return stream.str();
+}
+
+
+#endif //CTABLE_Hnamespace std {

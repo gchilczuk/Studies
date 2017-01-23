@@ -2,11 +2,12 @@
 #ifndef CTUI_H
 #define CTUI_H
 #include "CTable.h"
+#define S Osoba
 
 
 class CTUI {
 private:
-    CTable<int> **tab;
+    CTable<S> **tab;
     int size;
     void resize(int);
     bool isfree(int);

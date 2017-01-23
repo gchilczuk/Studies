@@ -1,6 +1,5 @@
 #include <iostream>
 #include "CTable.h"
-#include "Osoba.h"
 #include "CTUI.h"
 
 using std::cin;
@@ -17,12 +16,12 @@ int main() {
     bos.setWiek(42);
     cout << endl << bos << endl;
     cout << a.pGetElement(1) << endl;
-    cout << a;
-//    cout << endl;
-//    string c;
-//    cin >> c;
-//    CTUI *tui = new CTUI();
-//    while(tui->execute(c));
-//    delete tui;
+    cout << a.sToString();
+    cout << endl;
+    string c;
+    cin >> c;
+    CTUI *tui = new CTUI();
+    while(tui->execute(c));
+    delete tui;
     return 0;
 }

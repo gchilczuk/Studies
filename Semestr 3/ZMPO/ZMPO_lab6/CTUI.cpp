@@ -8,8 +8,10 @@ using std::cin;
 using std::endl;
 using std::to_string;
 
+//typedef CTable<S>
+
 void CTUI::resize(int newSize) {
-    CTable<int> ** newTab = new CTable<int>*[newSize];
+    CTable<S> ** newTab = new CTable<S>*[newSize];
     for (int i = 0; i < size; i++){
         newTab[i] = tab[i];
     }
@@ -19,7 +21,7 @@ void CTUI::resize(int newSize) {
 }
 
 CTUI::CTUI() {
-    tab = new CTable<int>*[10];
+    tab = new CTable<S>*[10];
     size=10;
     for (int i = 0; i < size; i++){
         tab[i] = NULL;
@@ -27,7 +29,7 @@ CTUI::CTUI() {
 }
 
 CTUI::CTUI(int len) {
-    tab = new CTable<int>*[len];
+    tab = new CTable<S>*[len];
     size=len;
     for (int i = 0; i < size; i++){
         tab[i] = NULL;
@@ -49,7 +51,7 @@ string CTUI::createDef() {
     if (nr < 0) return "Ujemny indeks!";
     else if (nr >= size) resize(nr+10);
     if (!isfree(nr)) return "Odmowa";
-    tab[nr] = new CTable<int>();
+    tab[nr] = new CTable<S>();
     return "Done! (createDef[" + to_string(nr)+"])";
 }
 
@@ -60,7 +62,7 @@ string CTUI::create() {
     if (nr < 0) return "Ujemny indeks!";
     else if (nr >= size) resize(nr+10);
     if (!isfree(nr)) return "Odmowa";
-    tab[nr] = new CTable<int>(name, len);
+    tab[nr] = new CTable<S>(name, len);
     return "Done! (create["+to_string(nr)+"])";
 }
 
@@ -71,7 +73,7 @@ string CTUI::createCopy() {
     if (nr < 0 || nrc < 0) return "Ujemny indeks!";
     else if (nr >= size) resize(nr+10);
     if (!isfree(nr)) return "Odmowa";
-    tab[nr] = new CTable<int>(*tab[nrc]);
+    tab[nr] = new CTable<S>(*tab[nrc]);
     return "Done! (createCopy["+to_string(nr)+"])";
 }
 
@@ -87,20 +89,26 @@ string CTUI::createClone() {
 }
 
 string CTUI::setValue() {
-    int nr, index, val;
+    int nr, index;
+    S val;
     cin >> nr >> index >> val;
     if (nr < 0 || nr >= size || tab[nr] == NULL) return "Błędny indeks!";
-    if (!tab[nr]->vSetElement(index, val)) return "Błąd danych!";
+    try{
+        if (!tab[nr]->vSetElement(index, val)) return "Błąd danych!";
+    }catch (char czar){
+        if (czar == 'a') return "Czary Mary";
+    }
     return "Done! (setValue)";
 }
 
 string CTUI::getValue() {
-    int nr, index, ivalue;
+    int nr, index;
+    S ivalue;
     string ret;
     cin >> nr >> index;
     if (nr < 0 || nr >= size || tab[nr] == NULL || index < 0 || index >= tab[nr]->iGetLen()) return "Indeks nie istnieje!";
     ivalue = tab[nr]->pGetElement(index);
-    ret ="tab["+to_string(nr)+"]["+to_string(index)+"] = " +to_string(ivalue);
+    ret ="tab["+to_string(nr)+"]["+to_string(index)+"] = " + CTable<S>::from_out_to_str(ivalue);
     return ret;
 }
 
@@ -150,8 +158,7 @@ string CTUI::toString() {
     int nr;
     cin >> nr;
     if (nr < 0 || nr >= size || tab[nr] == NULL) return "Błędny indeks!";
-    cout << tab[nr];
-    return "";
+    return tab[nr]->sToString();
 }
 
 string CTUI::getLen() {
