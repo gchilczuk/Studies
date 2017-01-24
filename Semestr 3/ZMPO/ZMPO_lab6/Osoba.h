@@ -2,6 +2,7 @@
 #define ZMPO_LAB6_OSOBA_H
 #include <string>
 #include <ostream>
+#include "exc.cpp"
 
 
 using std::string;

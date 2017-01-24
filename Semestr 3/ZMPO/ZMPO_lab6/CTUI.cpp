@@ -94,9 +94,10 @@ string CTUI::setValue() {
     cin >> nr >> index >> val;
     if (nr < 0 || nr >= size || tab[nr] == NULL) return "Błędny indeks!";
     try{
-        if (!tab[nr]->vSetElement(index, val)) return "Błąd danych!";
-    }catch (char czar){
-        if (czar == 'a') return "Czary Mary";
+        tab[nr]->vSetElement(index, val);
+    }catch (exception& e)
+    {
+        cout << e.what() << '\n';
     }
     return "Done! (setValue)";
 }
@@ -107,7 +108,12 @@ string CTUI::getValue() {
     string ret;
     cin >> nr >> index;
     if (nr < 0 || nr >= size || tab[nr] == NULL || index < 0 || index >= tab[nr]->iGetLen()) return "Indeks nie istnieje!";
-    ivalue = tab[nr]->pGetElement(index);
+    try{
+        ivalue = tab[nr]->pGetElement(index);
+    }catch (exception& e)
+    {
+        cout << e.what() << '\n';
+    }
     ret ="tab["+to_string(nr)+"]["+to_string(index)+"] = " + CTable<S>::from_out_to_str(ivalue);
     return ret;
 }
