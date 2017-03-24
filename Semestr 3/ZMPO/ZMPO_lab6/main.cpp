@@ -6,9 +6,7 @@ using std::cin;
 
 int main() {
     CTable<Osoba> a("tabb", 10);
-    cout << 1;
     Osoba *os = new Osoba("Adam", 13);
-    cout << 2;
     a.vSetElement(1, *os);
     cout << 3;
     Osoba bos = a.pGetElement(1);

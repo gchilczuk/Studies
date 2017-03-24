@@ -31,7 +31,7 @@ public:
 
     void vSetName(string sName);
     bool bSetSize(int iSize);
-    bool vSetElement(int iIndex, T iValue);
+    void vSetElement(int iIndex, T iValue);
 
     T pGetElement(int iIndex);
     int iGetLen();
@@ -119,14 +119,13 @@ template <class T> bool CTable<T>::bSetSize(int iSize) {
     return true;
 }
 
-template <class T> bool CTable<T>::vSetElement(int iIndex, T iValue) {
-    if (iIndex < 0 || iIndex >= i_table_size) throw 'a';
+template <class T> void CTable<T>::vSetElement(int iIndex, T iValue) {
+    if (iIndex < 0 || iIndex >= i_table_size) throw indexOutOfBoundsEXC();
     p_table[iIndex] = iValue;
-    return true;
 }
 
 template <class T> T CTable<T>::pGetElement(int iIndex) {
-    if (iIndex < 0 || iIndex >= i_table_size) throw 'a';
+    if (iIndex < 0 || iIndex >= i_table_size) throw indexOutOfBoundsEXC();
     return p_table[iIndex];
 }
 

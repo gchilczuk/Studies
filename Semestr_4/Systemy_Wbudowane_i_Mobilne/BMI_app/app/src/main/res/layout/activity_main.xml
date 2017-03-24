@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="pl.edu.pwr.swim.chilczuk.bmi_app.MainActivity">
+
+
+    <TextView
+        android:id="@+id/massTV"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:text="@string/mass_info"
+        android:textSize="30sp"
+        android:layout_toLeftOf="@+id/massET"
+        />
+
+    <EditText
+        android:id="@+id/massET"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/mass_example"
+        android:textSize="30sp"
+        android:layout_toRightOf="@+id/massTV"
+        android:layout_toEndOf="@+id/massTV"
+        />
+
+    <TextView
+        android:id="@+id/heightTV"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="@string/height_info"
+        android:textSize="30sp"
+        android:layout_below="@+id/massTV"
+        />
+
+    <EditText
+        android:id="@+id/heightET"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/height_example"
+        android:textSize="30sp"
+        android:layout_above="@+id/massET"
+        android:layout_alignRight="@+id/massTV"
+        android:layout_alignEnd="@+id/massTV" />
+
+    <Button
+        android:id="@+id/submit_button"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="@string/confirm_buttom"
+        android:layout_marginTop="92dp"
+        android:layout_below="@+id/massET"
+        android:layout_alignRight="@+id/massET"
+        android:layout_alignEnd="@+id/massET"
+        android:layout_marginRight="42dp"
+        android:layout_marginEnd="42dp" />
+
+    <TextView
+        android:id="@+id/resultTV"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_below="@+id/submit_button"
+        />
+
+
+</RelativeLayout>

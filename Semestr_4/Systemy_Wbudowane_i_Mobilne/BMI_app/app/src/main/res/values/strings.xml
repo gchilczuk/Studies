@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Kalkulator BMI</string>
+    <string name="mass_info">Podaj swoją wagę:</string>
+    <string name="mass_example">50 [kg]</string>
+    <string name="height_info">Podaj swój wzrost :</string>
+    <string name="height_example">1,7 [m]</string>
+    <string name="confirm_buttom">Oblicz BMI</string>
+</resources>

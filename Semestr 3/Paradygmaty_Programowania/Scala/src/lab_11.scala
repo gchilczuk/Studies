@@ -50,7 +50,7 @@ var QofPixel = Queue(new Pixel(2,2))
 
 QofPoint = QofPixel
 
-println(QofPoint.first)
+println(QofPoint.first.asInstanceOf[Pixel])
 
 QofPoint = QofPoint.enqueue(new Point(1,1))
 QofPoint = QofPoint.enqueue(new Pixel(3,3))
