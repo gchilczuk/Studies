@@ -23,10 +23,14 @@ public class MainActivity extends AppCompatActivity {
         final EditText mass = (EditText) findViewById(R.id.massET);
         final EditText height = (EditText) findViewById(R.id.heightET);
         final BMIforMKG calc = new BMIforMKG();
+        final String bmi_result_hint = calc.countBMI(50, 1.7f)+"";
+        result.setHint(bmi_result_hint);
         button.setOnClickListener(new View.OnClickListener() {
+            String bmi_result;
             public void onClick(View v) {
+                bmi_result = calc.countBMI(Integer.valueOf(mass.getText().toString()), Float.valueOf(height.getText().toString()))+"";
                 result.clearComposingText();
-                result.setText(calc.countBMI(mass.getAlpha(), height.getAlpha())+1+"");
+                result.setText(bmi_result);
             }
         });
     }
