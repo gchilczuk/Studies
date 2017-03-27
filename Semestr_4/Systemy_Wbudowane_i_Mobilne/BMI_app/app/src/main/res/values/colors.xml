@@ -3,14 +3,17 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="Underweight_III">#FF4081</color>
-    <color name="Underweight_II">#FF4091</color>
-    <color name="Underweight_I">#FF40A1</color>
-    <color name="Normal_weight">#FF40B1</color>
-    <color name="Obess_I">#FF40C1</color>
-    <color name="Obess_II">#FF40D1</color>
-    <color name="Obess_III">#FF40E1</color>
 
+    <color name="Underweight_III">#E3D9C6</color>
+    <color name="Underweight_II">#E6D690</color>
+    <color name="Underweight_I">#F3DA0B</color>
+    <color name="Normal_weight">#00BB2D</color>
+    <color name="Overweight">#F75E25</color>
+    <color name="Obess_I">#A52019</color>
+    <color name="Obess_II">#9B111E</color>
+    <color name="Obess_III">#721422</color>
+
+    <color name="Black">#000000</color>
 
 
 </resources>

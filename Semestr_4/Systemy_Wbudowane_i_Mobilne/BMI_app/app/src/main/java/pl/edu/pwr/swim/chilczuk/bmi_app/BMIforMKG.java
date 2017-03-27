@@ -3,7 +3,7 @@ package pl.edu.pwr.swim.chilczuk.bmi_app;
 public class BMIforMKG implements IBMI {
     static final float MIN_HEIGHT = 0.5f;
     static final float MAX_HEIGHT = 3.0f;
-    static final float MIN_WEIGHT = 20.0f;
+    static final float MIN_WEIGHT = 10.0f;
     static final float MAX_WEIGHT = 600.0f;
 
     @Override

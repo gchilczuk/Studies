@@ -8,7 +8,6 @@
     <string name="menu_item_SI">jednostki SI</string>
     <string name="menu_item_IMP">jednostki Imperailne</string>
 
-    <!--redundant-->
     <string name="mass_hint_kg">70 [kg]</string>
     <string name="mass_hint_lb">154 [lb]</string>
     <string name="height_hint_m">1.7 [m]</string>

@@ -1,6 +1,7 @@
 package pl.edu.pwr.swim.chilczuk.bmi_app;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,7 +13,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,15 +21,17 @@ public class MainActivity extends AppCompatActivity {
     TextView resultTV;
     EditText massET, heightETp;
     Float defaultMass, defeaultHeight;
-    String bmi_result_hint, massUnit, heightUnit;
+    String bmiResultHint, massHint, heightHint;
     Boolean no_error = true;
     Context context;
 
     private void SImode(){
         defaultMass = 70.0f;
-        defeaultHeight = 1.75f;
-        massUnit = "[kg]";
-        heightUnit = "[m]";
+        defeaultHeight = 1.8f;
+
+        massHint = getString(R.string.mass_hint_kg);
+        heightHint = getString(R.string.height_hint_m);
+
         calc = new BMIforMKG();
 
         setHints();
@@ -38,26 +40,47 @@ public class MainActivity extends AppCompatActivity {
     private void IMPmode(){
         defaultMass = 154.0f;
         defeaultHeight = 66.9f;
-        massUnit = "[lb]";
-        heightUnit = "[in]";
+
+        massHint = getString(R.string.mass_hint_lb);
+        heightHint = getString(R.string.height_hint_in);
+
         calc = new BMIforLBIN();
 
         setHints();
     }
 
     private void setHints(){
-        massET.clearComposingText();
-        heightETp.clearComposingText();
+        massET.getText().clear();
+        heightETp.getText().clear();
+        resultTV.setText("");
 
-        bmi_result_hint = String.format(Locale.ENGLISH, "%.2f", calc.countBMI(defaultMass, defeaultHeight));
-        massET.setHint(defaultMass+massUnit);
-        heightETp.setHint(defeaultHeight+heightUnit);
-        resultTV.setHint(bmi_result_hint);
+        bmiResultHint = String.format("%.2f", calc.countBMI(defaultMass, defeaultHeight));
+        massET.setHint(massHint);
+        heightETp.setHint(heightHint);
+        resultTV.setHint(bmiResultHint);
     }
 
-    private void showBMIresult(CharSequence bmiResult){
-        resultTV.setText(bmiResult);
+    private void showBMIresult(float bmiResult){
+        CharSequence bmiResCSeq = String.format("%.2f",bmiResult);
+        resultTV.setText(bmiResCSeq);
+        resultTV.setTextColor(chooseColor(bmiResult));
     }
+
+    private int chooseColor(float BMI){
+        int color;
+        if (BMI < 15) color = ContextCompat.getColor(context, R.color.Underweight_III);
+        else if (15.0f <= BMI && BMI < 16.0f) color = ContextCompat.getColor(context, R.color.Underweight_II);
+        else if (16.0f <= BMI && BMI < 18.5f) color = ContextCompat.getColor(context, R.color.Underweight_I);
+        else if (18.5f <= BMI && BMI < 25) color = ContextCompat.getColor(context, R.color.Normal_weight);
+        else if (25 <= BMI && BMI < 30) color = ContextCompat.getColor(context, R.color.Overweight);
+        else if (30 <= BMI && BMI < 35) color = ContextCompat.getColor(context, R.color.Obess_I);
+        else if (35 <= BMI && BMI < 40) color = ContextCompat.getColor(context, R.color.Obess_II);
+        else if (40 < BMI) color = ContextCompat.getColor(context, R.color.Obess_III);
+        else  color = ContextCompat.getColor(context, R.color.Black);
+        return color;
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,9 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
     private View.OnClickListener createOnClickListener(){
         return new View.OnClickListener() {
-            String bmi_result;
-            float massF;
-            float heightF;
+            float bmi_result, massF, heightF;
             Toast toast;
             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -119,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     no_error = true;
                     getValues();
-                    bmi_result = String.format("%.2f",calc.countBMI(massF, heightF));
+                    bmi_result = calc.countBMI(massF, heightF);
                     showBMIresult(bmi_result);
 
                     if (no_error)  imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
