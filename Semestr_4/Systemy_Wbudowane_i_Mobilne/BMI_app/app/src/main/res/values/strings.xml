@@ -4,12 +4,25 @@
     <string name="height_info">Wzrost:</string>
     <string name="submit_buttom">Oblicz BMI</string>
     <string name="result_header">Twoje BMI wynosi:</string>
-    <string name="menu_button">Menu</string>
-    <string name="menu_item_SI">jednostki SI</string>
-    <string name="menu_item_IMP">jednostki Imperailne</string>
+
+    <string name="menu_item_SI">Jednostki SI</string>
+    <string name="menu_item_IMP">Jednostki Imperialne</string>
+    <string name="manu_item_SHARE">Udostępnij</string>
+    <string name="manu_item_SAVE">Zapisz dane</string>
+    <string name="manu_item_AUTH">O Autorze</string>
 
     <string name="mass_hint_kg">70 [kg]</string>
     <string name="mass_hint_lb">154 [lb]</string>
+<<<<<<< Updated upstream
     <string name="height_hint_m">1.8 [m]</string>
     <string name="height_hint_in">70.3 [in]</string>
+=======
+<<<<<<< Updated upstream
+    <string name="height_hint_m">1.7 [m]</string>
+    <string name="height_hint_in">66.9 [in]</string>
+=======
+    <string name="height_hint_m">1.8 [m]</string>
+    <string name="height_hint_in" translatable="false">70.3 [in]</string>
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 </resources>

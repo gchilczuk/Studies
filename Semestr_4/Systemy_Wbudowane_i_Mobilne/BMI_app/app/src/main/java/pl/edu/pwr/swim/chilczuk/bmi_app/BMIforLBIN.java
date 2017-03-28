@@ -1,6 +1,6 @@
 package pl.edu.pwr.swim.chilczuk.bmi_app;
 
-public class BMIforLBIN implements IBMI{
+public class BMIforLBIN extends BMIabstract{
     static final float MIN_HEIGHT = 19.685f;
     static final float MAX_HEIGHT = 118.110f;
     static final float MIN_WEIGHT = 22.0f;
@@ -21,4 +21,5 @@ public class BMIforLBIN implements IBMI{
     public boolean isValidHeight(float height) {
         return height >= MIN_HEIGHT && height <= MAX_HEIGHT;
     }
+
 }

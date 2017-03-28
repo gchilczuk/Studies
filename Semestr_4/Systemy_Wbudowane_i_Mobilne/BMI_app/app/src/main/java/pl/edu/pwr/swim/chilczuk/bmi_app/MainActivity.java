@@ -1,7 +1,15 @@
 package pl.edu.pwr.swim.chilczuk.bmi_app;
 
 import android.content.Context;
+<<<<<<< Updated upstream
 import android.support.v4.content.ContextCompat;
+=======
+<<<<<<< Updated upstream
+=======
+import android.content.SharedPreferences;
+import android.support.v4.content.ContextCompat;
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,6 +24,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    // on state
     IBMI calc;
     Button submit_button;
     TextView resultTV;
@@ -160,6 +169,38 @@ public class MainActivity extends AppCompatActivity {
             }
         };
     }
+
+    @Override
+    protected void onPause() {
+        SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences("remember", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putString("mass", massET.getText().toString());
+        editor.putString("height", heightETp.getText().toString());
+
+        editor.commit();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences("remember", Context.MODE_PRIVATE);
+        massET.setText(sharedPrefs.getString("mass",""));
+        heightETp.setText(sharedPrefs.getString("height",""));
+
+        super.onResume();
+    }
+
+
+
+    // osobna ACTIVITY about_autor
+    // a tam: Image_view ze zdjęciem
+    // otwierane z apki, dowolny layout
+
+    // każda aktywność ma reagować na rotacje
+    // pamiętanie raz wpisanych danych
+    // button zapisywania | ma być aktywny tylko przy aktywnych danych
+    // button share wyszeruj np na fb (intent) | aktywne gdy wyliczony wynik
+
     // dodatkowo
     // butter knife zamiast findViewById
     // test UI przy użyciu jakiegoś frameworka: robotium, espresso albo apium
