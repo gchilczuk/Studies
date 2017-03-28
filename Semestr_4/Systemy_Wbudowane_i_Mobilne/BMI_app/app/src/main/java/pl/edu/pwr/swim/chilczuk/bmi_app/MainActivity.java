@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void IMPmode(){
         defaultMass = 154.0f;
-        defeaultHeight = 66.9f;
+        defeaultHeight = 70.8f;
 
         massHint = getString(R.string.mass_hint_lb);
         heightHint = getString(R.string.height_hint_in);
@@ -68,15 +68,15 @@ public class MainActivity extends AppCompatActivity {
 
     private int chooseColor(float BMI){
         int color;
-        if (BMI < 15) color = ContextCompat.getColor(context, R.color.Underweight_III);
-        else if (15.0f <= BMI && BMI < 16.0f) color = ContextCompat.getColor(context, R.color.Underweight_II);
-        else if (16.0f <= BMI && BMI < 18.5f) color = ContextCompat.getColor(context, R.color.Underweight_I);
-        else if (18.5f <= BMI && BMI < 25) color = ContextCompat.getColor(context, R.color.Normal_weight);
-        else if (25 <= BMI && BMI < 30) color = ContextCompat.getColor(context, R.color.Overweight);
-        else if (30 <= BMI && BMI < 35) color = ContextCompat.getColor(context, R.color.Obess_I);
-        else if (35 <= BMI && BMI < 40) color = ContextCompat.getColor(context, R.color.Obess_II);
-        else if (40 < BMI) color = ContextCompat.getColor(context, R.color.Obess_III);
-        else  color = ContextCompat.getColor(context, R.color.Black);
+        if (BMI < 15) color = ContextCompat.getColor(context, R.color.underweightIII);
+        else if (15.0f <= BMI && BMI < 16.0f) color = ContextCompat.getColor(context, R.color.underweightII);
+        else if (16.0f <= BMI && BMI < 18.5f) color = ContextCompat.getColor(context, R.color.underweightI);
+        else if (18.5f <= BMI && BMI < 25) color = ContextCompat.getColor(context, R.color.normalWeight);
+        else if (25 <= BMI && BMI < 30) color = ContextCompat.getColor(context, R.color.overweight);
+        else if (30 <= BMI && BMI < 35) color = ContextCompat.getColor(context, R.color.obessI);
+        else if (35 <= BMI && BMI < 40) color = ContextCompat.getColor(context, R.color.obessII);
+        else if (40 < BMI) color = ContextCompat.getColor(context, R.color.obessIII);
+        else  color = ContextCompat.getColor(context, R.color.black);
         return color;
     }
 

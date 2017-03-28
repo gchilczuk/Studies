@@ -17,6 +17,7 @@
         android:text="@string/mass_info"
         android:textSize="30sp"
         android:gravity="center"
+        android:textColorHint="@color/hintColor"
 
         android:layout_alignParentLeft="true"
         />
@@ -28,6 +29,7 @@
         android:textSize="30sp"
         android:inputType="number"
         android:gravity="center"
+        android:textColorHint="@color/hintColor"
 
         android:layout_toRightOf="@+id/massTV"
         />
@@ -51,6 +53,7 @@
         android:textSize="30sp"
         android:inputType="numberDecimal"
         android:gravity="center"
+        android:textColorHint="@color/hintColor"
 
         android:layout_toRightOf="@+id/heightTV"
         android:layout_below="@+id/massET"
@@ -86,8 +89,7 @@
         android:layout_height="wrap_content"
         android:textSize="80sp"
         android:gravity="center"
-        android:textColor="@android:color/holo_red_dark"
-        android:textColorHint="@android:color/holo_purple"
+        android:textColorHint="@color/hintColor"
 
         android:layout_below="@+id/result_headerTV"
         android:layout_centerHorizontal="true"

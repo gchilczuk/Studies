@@ -10,6 +10,6 @@
 
     <string name="mass_hint_kg">70 [kg]</string>
     <string name="mass_hint_lb">154 [lb]</string>
-    <string name="height_hint_m">1.7 [m]</string>
-    <string name="height_hint_in">66.9 [in]</string>
+    <string name="height_hint_m">1.8 [m]</string>
+    <string name="height_hint_in">70.3 [in]</string>
 </resources>
