@@ -2,22 +2,7 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-<<<<<<< Updated upstream
-    <color name="colorAccent">#FF4081</color>
-<<<<<<< Updated upstream
-=======
-    <color name="Underweight_III">#FF4081</color>
-    <color name="Underweight_II">#FF4091</color>
-    <color name="Underweight_I">#FF40A1</color>
-    <color name="Normal_weight">#FF40B1</color>
-    <color name="Obess_I">#FF40C1</color>
-    <color name="Obess_II">#FF40D1</color>
-    <color name="Obess_III">#FF40E1</color>
-=======
     <color name="colorAccent">#3B83BD</color>
->>>>>>> Stashed changes
->>>>>>> Stashed changes
-
     <color name="underweightIII">#E3D9C6</color>
     <color name="underweightII">#E6D690</color>
     <color name="underweightI">#F3DA0B</color>

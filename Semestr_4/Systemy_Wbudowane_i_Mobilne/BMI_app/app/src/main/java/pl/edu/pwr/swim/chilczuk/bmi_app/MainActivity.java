@@ -1,15 +1,9 @@
 package pl.edu.pwr.swim.chilczuk.bmi_app;
 
 import android.content.Context;
-<<<<<<< Updated upstream
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
-=======
-<<<<<<< Updated upstream
-=======
 import android.content.SharedPreferences;
-import android.support.v4.content.ContextCompat;
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,8 +17,6 @@ import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
-
-    // on state
     IBMI calc;
     Button submit_button;
     TextView resultTV;
@@ -33,10 +25,11 @@ public class MainActivity extends AppCompatActivity {
     String bmiResultHint, massHint, heightHint;
     Boolean no_error = true;
     Context context;
+    String currentUnit;
 
-    private void SImode(){
+    private void SImode() {
         defaultMass = 70.0f;
-        defeaultHeight = 1.8f;
+        defeaultHeight = 180f;
 
         massHint = getString(R.string.mass_hint_kg);
         heightHint = getString(R.string.height_hint_m);
@@ -44,9 +37,17 @@ public class MainActivity extends AppCompatActivity {
         calc = new BMIforMKG();
 
         setHints();
+        currentUnit = "SI";
     }
 
-    private void IMPmode(){
+    private void changeToSI() {
+        float newMass = BMIabstract.fromLBtoKG(getMass());
+        float newHeight = BMIabstract.fromINtoCM(getHeight());
+        SImode();
+        afterModeChange(newMass, newHeight);
+    }
+
+    private void IMPmode() {
         defaultMass = 154.0f;
         defeaultHeight = 70.8f;
 
@@ -56,12 +57,27 @@ public class MainActivity extends AppCompatActivity {
         calc = new BMIforLBIN();
 
         setHints();
+        currentUnit = "IMP";
     }
 
-    private void setHints(){
-        massET.getText().clear();
-        heightETp.getText().clear();
-        resultTV.setText("");
+    private void changeToIMP() {
+        float newMass = BMIabstract.fromKGtoLB(getMass());
+        float newHeight = BMIabstract.fromCMtoIN(getHeight());
+        IMPmode();
+        afterModeChange(newMass, newHeight);
+    }
+
+    private void afterModeChange(float mass, float height) {
+        if (mass != 0.0f) massET.setText(String.format("%.0f", mass));
+        if (height != 0.0f) heightETp.setText(String.format("%.0f", height));
+        if (mass != 0.0f && height != 0.0f) showBMIresult(calc.countBMI(mass, height));
+
+    }
+
+    private void setHints() {
+//        massET.getText().clear();
+//        heightETp.getText().clear();
+//        resultTV.setText("");
 
         bmiResultHint = String.format("%.2f", calc.countBMI(defaultMass, defeaultHeight));
         massET.setHint(massHint);
@@ -69,26 +85,28 @@ public class MainActivity extends AppCompatActivity {
         resultTV.setHint(bmiResultHint);
     }
 
-    private void showBMIresult(float bmiResult){
-        CharSequence bmiResCSeq = String.format("%.2f",bmiResult);
+    private void showBMIresult(float bmiResult) {
+        CharSequence bmiResCSeq = String.format("%.2f", bmiResult);
         resultTV.setText(bmiResCSeq);
         resultTV.setTextColor(chooseColor(bmiResult));
     }
 
-    private int chooseColor(float BMI){
+    private int chooseColor(float BMI) {
         int color;
         if (BMI < 15) color = ContextCompat.getColor(context, R.color.underweightIII);
-        else if (15.0f <= BMI && BMI < 16.0f) color = ContextCompat.getColor(context, R.color.underweightII);
-        else if (16.0f <= BMI && BMI < 18.5f) color = ContextCompat.getColor(context, R.color.underweightI);
-        else if (18.5f <= BMI && BMI < 25) color = ContextCompat.getColor(context, R.color.normalWeight);
+        else if (15.0f <= BMI && BMI < 16.0f)
+            color = ContextCompat.getColor(context, R.color.underweightII);
+        else if (16.0f <= BMI && BMI < 18.5f)
+            color = ContextCompat.getColor(context, R.color.underweightI);
+        else if (18.5f <= BMI && BMI < 25)
+            color = ContextCompat.getColor(context, R.color.normalWeight);
         else if (25 <= BMI && BMI < 30) color = ContextCompat.getColor(context, R.color.overweight);
         else if (30 <= BMI && BMI < 35) color = ContextCompat.getColor(context, R.color.obessI);
         else if (35 <= BMI && BMI < 40) color = ContextCompat.getColor(context, R.color.obessII);
         else if (40 < BMI) color = ContextCompat.getColor(context, R.color.obessIII);
-        else  color = ContextCompat.getColor(context, R.color.black);
+        else color = ContextCompat.getColor(context, R.color.black);
         return color;
     }
-
 
 
     @Override
@@ -124,25 +142,34 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.MI_SI) {
-            SImode();
+            if (!currentUnit.equals("SI"))
+                changeToSI();
             return true;
-        }else if(id == R.id.MI_IMP){
-            IMPmode();
+        } else if (id == R.id.MI_IMP) {
+            if (!currentUnit.equals("IMP"))
+                changeToIMP();
             return true;
+        } else if (id == R.id.SHARE) {
+            String message = "Jeden pomidor jest obowiązkowy";
+            Intent share = new Intent(Intent.ACTION_SEND);
+            share.setType("text/plain");
+            share.putExtra(Intent.EXTRA_TEXT, message);
+
+            startActivity(Intent.createChooser(share, "TiTlE"));
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private View.OnClickListener createOnClickListener(){
+    private View.OnClickListener createOnClickListener() {
         return new View.OnClickListener() {
             float bmi_result, massF, heightF;
             Toast toast;
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-            private void getValues(){
-                massF = Float.valueOf(massET.getText().toString());
-                heightF = Float.valueOf(heightETp.getText().toString());
+            private void getValues() {
+                massF = getMass();
+                heightF = getHeight();
             }
 
             public void onClick(View v) {
@@ -152,15 +179,15 @@ public class MainActivity extends AppCompatActivity {
                     bmi_result = calc.countBMI(massF, heightF);
                     showBMIresult(bmi_result);
 
-                    if (no_error)  imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    if (no_error) imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 
-                } catch (NumberFormatException e){
+                } catch (NumberFormatException e) {
                     toast = Toast.makeText(context, "Please input value", Toast.LENGTH_SHORT);
                     toast.show();
-                } catch (IllegalArgumentException e){
+                } catch (IllegalArgumentException e) {
                     toast = Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT);
                     toast.show();
-                } catch (Exception e){
+                } catch (Exception e) {
                     toast = Toast.makeText(context, "Something gone wrong", Toast.LENGTH_SHORT);
                     toast.show();
                 } finally {
@@ -184,12 +211,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences("remember", Context.MODE_PRIVATE);
-        massET.setText(sharedPrefs.getString("mass",""));
-        heightETp.setText(sharedPrefs.getString("height",""));
+        massET.setText(sharedPrefs.getString("mass", ""));
+        heightETp.setText(sharedPrefs.getString("height", ""));
 
         super.onResume();
     }
 
+    float getMass() {
+        float value = 0.0f;
+        String massString = massET.getText().toString();
+        if (!massString.equals(""))
+            value = Float.valueOf(massString);
+        return value;
+    }
+
+    float getHeight() {
+        float value = 0.0f;
+        String heightString = heightETp.getText().toString();
+        if (!heightString.equals(""))
+            value = Float.valueOf(heightString);
+        return value;
+    }
 
 
     // osobna ACTIVITY about_autor
