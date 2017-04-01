@@ -11,22 +11,22 @@
         android:id="@+id/RGmode"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/RBSI"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/menu_item_SI"
-            android:onClick="onRadioButtonClicked"/>
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/menu_item_SI" />
 
         <RadioButton
             android:id="@+id/RBIMP"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/menu_item_IMP"
-            android:onClick="onRadioButtonClicked"/>
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/menu_item_IMP" />
     </RadioGroup>
 
     <TextView
@@ -94,7 +94,9 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@+id/massET"
+        android:gravity="center"
         android:text="@string/result_header"
+
 
         android:textSize="30sp" />
 
@@ -103,13 +105,10 @@
         android:layout_width="250dp"
         android:layout_height="wrap_content"
 
-        android:layout_alignEnd="@+id/result_headerTV"
-        android:layout_alignRight="@+id/result_headerTV"
-        android:layout_below="@+id/RGmode"
-
-        android:layout_marginLeft="65dp"
-        android:layout_marginEnd="65dp"
-        android:layout_marginRight="65dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/result_headerTV"
+        android:layout_marginTop="18dp"
         android:gravity="center"
         android:textColorHint="@color/hintColor"
         android:textSize="80sp" />

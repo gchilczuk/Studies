@@ -23,12 +23,18 @@ import butterknife.OnTextChanged;
 
 public class MainActivity extends AppCompatActivity {
     private IBMI calc;
-    @BindView(R2.id.resultTV) TextView resultTV;
-    @BindView(R2.id.massET) EditText massET;
-    @BindView(R2.id.heightET) EditText heightETp;
-    @BindView(R2.id.submit_button) Button submitBtn;
-    @BindView(R2.id.RBSI) RadioButton radioButtonSI;
-    @BindView(R2.id.RBIMP) RadioButton radioButtonIMP;
+    @BindView(R2.id.resultTV)
+    TextView resultTV;
+    @BindView(R2.id.massET)
+    EditText massET;
+    @BindView(R2.id.heightET)
+    EditText heightETp;
+    @BindView(R2.id.submit_button)
+    Button submitBtn;
+    @BindView(R2.id.RBSI)
+    RadioButton radioButtonSI;
+    @BindView(R2.id.RBIMP)
+    RadioButton radioButtonIMP;
     MenuItem menuItemSave, menuItemRestore;
 
     private Float currentMass, currentHeight, currentBMI;
@@ -36,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private String currentUnit;
     private Context context;
     private UnitChanger unitChanger = new UnitChanger();
+    private int tostVounter =0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,17 +53,11 @@ public class MainActivity extends AppCompatActivity {
         context = getApplicationContext();
         ButterKnife.bind(this);
 
-        if (isSomethingSaved()){
+        if (isSomethingSaved()) {
             onRestore();
         } else {
             SImode();
         }
-    }
-
-    @Override
-    protected void onResume() {
-
-        super.onResume();
     }
 
     @Override
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         outState.putFloat("height", currentHeight);
         outState.putString("unit", currentUnit);
         outState.putFloat("BMI", currentBMI);
-        
+
         outState.putFloat("UCSImass", unitChanger.getSImass());
         outState.putFloat("UCSIheight", unitChanger.getSIheight());
         outState.putFloat("UCIMPmass", unitChanger.getIMPmass());
@@ -87,10 +88,11 @@ public class MainActivity extends AppCompatActivity {
         b = savedInstanceState.getFloat("UCSIheight", 0f);
         c = savedInstanceState.getFloat("UCIMPmass", 0f);
         d = savedInstanceState.getFloat("UCIMPheight", 0f);
-        unitChanger = new UnitChanger(a,b,c,d);
-        
+        unitChanger = new UnitChanger(a, b, c, d);
+
         chooseCalc();
         reGetOfCurrent();
+//        toaster("BMI to: "+resultTV.getText().toString());
 
         super.onRestoreInstanceState(savedInstanceState);
     }
@@ -100,10 +102,14 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.actions, menu);
         menuItemSave = menu.findItem(R.id.SAVE);
         menuItemRestore = menu.findItem(R.id.RESTORE);
-        if (isSomethingSaved()){
+        if (isSomethingSaved()) {
             menuItemRestore.setEnabled(true);
         } else menuItemRestore.setEnabled(false);
-        onInputTextChange();
+        if (getMass() == 0f || getHeight() == 0f) {
+            if (menuItemSave != null) menuItemSave.setEnabled(false);
+        } else if (getMass() > 0f && getHeight() > 0f) {
+            if (menuItemSave != null) menuItemSave.setEnabled(true);
+        }
 
         return true;
     }
@@ -125,6 +131,9 @@ public class MainActivity extends AppCompatActivity {
             onSave();
         } else if (id == R.id.RESTORE) {
             onRestore();
+            /*toaster("teraz pobiorę tekst");
+            massET.getText();
+            massET.setHint("");*/
         }
 
         return super.onOptionsItemSelected(item);
@@ -143,6 +152,11 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
+
+   /* @OnTextChanged(R2.id.resultTV)
+    public void bmichanged(){
+        toaster("BMI teraz wynosi: "+getBMI());
+    }*/
 
     protected void onSave() {
         reSetOnCurrent();
@@ -174,12 +188,13 @@ public class MainActivity extends AppCompatActivity {
         b = sharedPrefs.getFloat("UCSIheight", 0f);
         c = sharedPrefs.getFloat("UCIMPmass", 0f);
         d = sharedPrefs.getFloat("UCIMPheight", 0f);
-        unitChanger = new UnitChanger(a,b,c,d);
+        unitChanger = new UnitChanger(a, b, c, d);
 
         setCurrentUnit(sharedPrefs.getString("unit", "None"));
         if (!currentUnit.equals("None")) {
             massET.setText(sharedPrefs.getString("mass", ""));
             heightETp.setText(sharedPrefs.getString("height", ""));
+//            toaster("setCurrentUnit");
             reSetOnCurrent();
         }
     }
@@ -187,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
     public void calculateBMI(View v) {
         try {
             reSetOnCurrent();
-            toaster(currentUnit + " | " + currentMass + " | " + currentHeight);
+//            toaster(currentUnit + " | " + currentMass + " | " + currentHeight);
             currentBMI = calc.countBMI(currentMass, currentHeight);
             showBMIresult(currentBMI);
 
@@ -200,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (IllegalArgumentException e) {
             toaster(getString(R.string.ExcMassHeight));
         } catch (Exception e) {
-            toaster(getString(R.string.ExcOther) + e.getMessage());
+            toaster(getString(R.string.ExcOther) /*+ e.getMessage()*/);
             e.printStackTrace();
         }
 
@@ -245,27 +260,28 @@ public class MainActivity extends AppCompatActivity {
     private void afterModeChange(float mass, float height) {
         if (mass != 0.0f) massET.setText(String.valueOf(mass));
         if (height != 0.0f) heightETp.setText(String.valueOf(height));
+//        toaster("afterModeChange");
         if (mass != 0.0f && height != 0.0f) showBMIresult(calc.countBMI(mass, height));
         reSetOnCurrent();
     }
 
 
-    @OnTextChanged({R2.id.massET, R2.id.heightET })
-    public void onInputTextChange(){
+    @OnTextChanged({R2.id.massET, R2.id.heightET})
+    public void onInputTextChange() {
         if (getMass() == 0f || getHeight() == 0f) {
             if (submitBtn != null) submitBtn.setEnabled(false);
             if (menuItemSave != null) menuItemSave.setEnabled(false);
-        } else if (getMass() > 0f && getHeight() > 0f){
+        } else if (getMass() > 0f && getHeight() > 0f) {
             if (submitBtn != null) submitBtn.setEnabled(true);
             if (menuItemSave != null) menuItemSave.setEnabled(true);
         }
-        resultTV.setText("");
+//        toaster("tekst changed: "+getMass()+" | "+getHeight());
     }
 
-    private void setCurrentUnit(String mode){
-        if (mode.equals("SI")){
+    private void setCurrentUnit(String mode) {
+        if (mode.equals("SI")) {
             radioButtonSI.performClick();
-        } else if (mode.equals("IMP")){
+        } else if (mode.equals("IMP")) {
             radioButtonIMP.performClick();
         }
     }
@@ -278,7 +294,7 @@ public class MainActivity extends AppCompatActivity {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     */
 
-    private boolean isSomethingSaved(){
+    private boolean isSomethingSaved() {
         SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences("remember", Context.MODE_PRIVATE);
         return sharedPrefs.contains("saved");
     }
@@ -297,6 +313,9 @@ public class MainActivity extends AppCompatActivity {
     private void toaster(String text) {
         Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
         toast.show();
+        /*tostVounter+=1;
+        toast = Toast.makeText(context, "tost nr "+tostVounter, Toast.LENGTH_SHORT);
+        toast.show();*/
     }
 
     private void hideKeyboar(View v) {
@@ -314,7 +333,9 @@ public class MainActivity extends AppCompatActivity {
         if (areCurrentOK()) {
             massET.setText(String.valueOf(currentMass));
             heightETp.setText(String.valueOf(currentHeight));
+//            toaster("reGetOfCurrent");
             showBMIresult(currentBMI);
+//            toaster(currentBMI + "");
         }
     }
 
@@ -382,10 +403,9 @@ public class MainActivity extends AppCompatActivity {
                 calc = new BMIforLBIN();
                 break;
             default:
-                toaster("Something gone wrong");
+                toaster(getString(R.string.ExcOther));
         }
     }
-
 
 
     // pamiętanie raz wpisanych danych
