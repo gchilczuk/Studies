@@ -9,22 +9,25 @@
 
     <RadioGroup
         android:id="@+id/RGmode"
-        android:layout_width="match_parent"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center">
 
         <RadioButton
-            android:id="@+id/RBtnSI"
+            android:id="@+id/RBSI"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="@string/menu_item_SI" />
+            android:text="@string/menu_item_SI"
+            android:onClick="onRadioButtonClicked"/>
 
         <RadioButton
-            android:id="@+id/RBtnIMP"
+            android:id="@+id/RBIMP"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/menu_item_IMP" />
+            android:text="@string/menu_item_IMP"
+            android:onClick="onRadioButtonClicked"/>
     </RadioGroup>
 
     <TextView

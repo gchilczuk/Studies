@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,20 +28,24 @@ public class MainActivity extends AppCompatActivity {
     private String massHint, heightHint;
     private String currentUnit;
     private Context context;
+    private UnitChanger unitChanger = new UnitChanger();;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
+        currentUnit = "None";
+
         setContentView(R.layout.activity_main);
         context = getApplicationContext();
         ButterKnife.bind(this);
 
-        SImode();
+
         try{
             onRestore();
+            toaster("restore succes");
         }catch (Exception e){
             e.printStackTrace();
+            toaster(e.getMessage());
         }
     }
 
@@ -76,15 +81,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.MI_SI) {
-            if (!currentUnit.equals("SI"))
-                changeToSI();
-            return true;
-        } else if (id == R.id.MI_IMP) {
-            if (!currentUnit.equals("IMP"))
-                changeToIMP();
-            return true;
-        } else if (id == R.id.SHARE) {
+        if (id == R.id.SHARE) {
             String message = "Jeden pomidor jest obowiązkowy";
             Intent share = new Intent(Intent.ACTION_SEND);
             share.setType("text/plain");
@@ -103,6 +100,20 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void onRadioButtonClicked(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+        switch(view.getId()) {
+            case R.id.RBIMP:
+                if (checked)
+                    changeToIMP();
+                    break;
+            case R.id.RBSI:
+                if (checked)
+                    changeToSI();
+                    break;
+        }
+    }
+
     protected void onSave() {
         reSetOnCurrent();
         if (areCurrentOK()) {
@@ -111,27 +122,30 @@ public class MainActivity extends AppCompatActivity {
             editor.putString("mass", massET.getText().toString());
             editor.putString("height", heightETp.getText().toString());
             editor.putString("unit", currentUnit);
+            editor.putBoolean("saved", true);
             editor.commit();
         }
     }
     protected void onRestore() {
         SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences("remember", Context.MODE_PRIVATE);
-        currentUnit = sharedPrefs.getString("unit", "SI");
+        if (!sharedPrefs.getBoolean("saved", false)) throw new IllegalStateException("Nothing to restore!");
+        currentUnit = sharedPrefs.getString("unit", "None");
         if (currentUnit.equals("SI")){
             SImode();
         } else if (currentUnit.equals("IMP")){
             IMPmode();
         }
-        massET.setText(sharedPrefs.getString("mass", ""));
-        heightETp.setText(sharedPrefs.getString("height", ""));
-        reSetOnCurrent();
-        currentBMI = calc.countBMI(currentMass, currentHeight);
-        showBMIresult(currentBMI);
+        if (!currentUnit.equals("None")) {
+            massET.setText(sharedPrefs.getString("mass", ""));
+            heightETp.setText(sharedPrefs.getString("height", ""));
+            reSetOnCurrent();
+        }
     }
 
     public void calculateBMI(View v){
         try {
             reSetOnCurrent();
+            toaster(currentUnit+" | "+currentMass+" | "+currentHeight);
             currentBMI = calc.countBMI(currentMass, currentHeight);
             showBMIresult(currentBMI);
 
@@ -161,10 +175,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void changeToSI() {
-        float newMass = BMIabstract.fromLBtoKG(getMass());
-        float newHeight = BMIabstract.fromINtoCM(getHeight());
-        SImode();
-        afterModeChange(newMass, newHeight);
+        if (!currentUnit.equals("SI")) {
+            unitChanger.toSI(getMass(), getHeight());
+            float newMass = unitChanger.getSImass();
+            float newHeight = unitChanger.getSIheight();
+            SImode();
+            afterModeChange(newMass, newHeight);
+        }
     }
 
     private void IMPmode() {
@@ -178,10 +195,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void changeToIMP() {
-        float newMass = BMIabstract.fromKGtoLB(getMass());
-        float newHeight = BMIabstract.fromCMtoIN(getHeight());
-        IMPmode();
-        afterModeChange(newMass, newHeight);
+        if (!currentUnit.equals("IMP")) {
+            unitChanger.toIMP(getMass(), getHeight());
+            float newMass = unitChanger.getIMPmass();
+            float newHeight = unitChanger.getIMPheight();
+            IMPmode();
+            afterModeChange(newMass, newHeight);
+        }
     }
 
     private void afterModeChange(float mass, float height) {
