@@ -14,11 +14,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class MainActivity extends AppCompatActivity {
     private IBMI calc;
-    private TextView resultTV;
-    private EditText massET, heightETp;
+    @BindView(R2.id.resultTV) TextView resultTV;
+    @BindView(R2.id.massET) EditText massET;
+    @BindView(R2.id.heightET) EditText heightETp;
     private Float currentMass, currentHeight, currentBMI;
     private String massHint, heightHint;
     private String currentUnit;
@@ -26,12 +30,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = getApplicationContext();
-        resultTV = (TextView) findViewById(R.id.resultTV);
-        massET = (EditText) findViewById(R.id.massET);
-        heightETp = (EditText) findViewById(R.id.heightET);
+        ButterKnife.bind(this);
 
         SImode();
         try{
@@ -141,9 +144,8 @@ public class MainActivity extends AppCompatActivity {
         }catch (IllegalArgumentException e) {
             toaster(getString(R.string.ExcMassHeight));
         } catch (Exception e) {
-            toaster(getString(R.string.ExcOther));
-        } finally {
-            resultTV.setText("");
+            toaster(getString(R.string.ExcOther)+e.getMessage());
+            e.printStackTrace();
         }
 
     }
@@ -219,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
         if (areCurrentOK()){
             massET.setText(String.valueOf(currentMass));
             heightETp.setText(String.valueOf(currentHeight));
-            resultTV.setText(String.valueOf(currentBMI));
+            showBMIresult(currentBMI);
         }
     }
 
