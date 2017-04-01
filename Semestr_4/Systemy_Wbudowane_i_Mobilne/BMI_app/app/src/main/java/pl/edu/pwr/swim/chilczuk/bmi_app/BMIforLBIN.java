@@ -1,14 +1,17 @@
 package pl.edu.pwr.swim.chilczuk.bmi_app;
 
 public class BMIforLBIN extends BMIabstract{
-    static final float MIN_HEIGHT = 19.685f;
-    static final float MAX_HEIGHT = 118.110f;
-    static final float MIN_WEIGHT = 22.0f;
-    static final float MAX_WEIGHT = 1322.0f;
+    static final float MIN_HEIGHT = 20f;
+    static final float MAX_HEIGHT = 120f;
+    static final float MIN_WEIGHT = 20.0f;
+    static final float MAX_WEIGHT = 1300.0f;
 
     @Override
     public float countBMI(float mass, float height) {
-        if (!isValidHeight(height) || !isValidMass(mass)) throw new IllegalArgumentException("Wrong parameters");
+        boolean h = isValidHeight(height), m = isValidMass(mass);
+        if (!h && !m) throw new IllegalArgumentException("Wrong parameters");
+        else if (!h) throw new InvalidHeightException("<20, 120>");
+        else if (!m) throw new InvalidMassException("<20, 1300>");
         return mass/(height*height) * 703;
     }
 

@@ -9,8 +9,10 @@ public class BMIforMKG extends BMIabstract {
     @Override
     public float countBMI(float mass, float height) {
         height = height / 100.0f;
-        if (!isValidHeight(height) || !isValidMass(mass))
-            throw new IllegalArgumentException(height + "Wrong parameters" + mass);
+        boolean h = isValidHeight(height), m = isValidMass(mass);
+        if (!h && !m) throw new IllegalArgumentException("Wrong parameters");
+        else if (!h) throw new InvalidHeightException("<50, 300>");
+        else if (!m) throw new InvalidMassException("<10, 600>");
         else return mass / (height * height);
     }
 

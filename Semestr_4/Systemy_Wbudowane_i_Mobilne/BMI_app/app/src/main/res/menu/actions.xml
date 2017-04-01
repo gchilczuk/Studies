@@ -13,6 +13,9 @@
         android:id="@+id/SAVE"
         android:title="@string/manu_item_SAVE" />
     <item
+        android:id="@+id/RESTORE"
+        android:title="@string/manu_item_RESTORE"/>
+    <item
         android:id="@+id/AUTH"
         android:title="@string/manu_item_AUTH" />
 </menu>

@@ -5,14 +5,30 @@
     <string name="submit_buttom">Oblicz BMI</string>
     <string name="result_header">Twoje BMI wynosi:</string>
 
-    <string name="menu_item_SI">Jednostki SI</string>
-    <string name="menu_item_IMP">Jednostki Imperialne</string>
+    <string name="menu_item_SI"> jednostki SI</string>
+    <string name="menu_item_IMP">jednostki IMP</string>
     <string name="manu_item_SHARE">Udostępnij</string>
     <string name="manu_item_SAVE">Zapisz dane</string>
+    <string name="manu_item_RESTORE">Wczytaj zapisane</string>
     <string name="manu_item_AUTH">O Autorze</string>
 
-    <string name="mass_hint_kg">70 [kg]</string>
-    <string name="mass_hint_lb">154 [lb]</string>
-    <string name="height_hint_m">180 [cm]</string>
-    <string name="height_hint_in">70.3 [in]</string>
+    <string name="mass_hint_kg">[kg]</string>
+    <string name="mass_hint_lb">[lb]</string>
+    <string name="height_hint_m">[cm]</string>
+    <string name="height_hint_in">[in]</string>
+
+    <string name="title_activity_author">Autor</string>
+    <string name="auth_descr">
+        "Autor: Grzegorz Chilczuk \n\n"
+
+        "Cel: nauczyć się czegoś fajnego \n \n"
+
+        "Po wyłączeniu aplikacji zaleca się:"
+    </string>
+    <string name="mail_fail">Wysłanie wiadomości email nie powiodło się</string>
+
+    <string name="ExcMass">Masa jest spoza zakresu</string>
+    <string name="ExcHeight">Wysokość jest spoza zakresu</string>
+    <string name="ExcMassHeight">Podane dane są nieprawidłowe</string>
+    <string name="ExcOther">Coś poszło nie tak</string>
 </resources>
