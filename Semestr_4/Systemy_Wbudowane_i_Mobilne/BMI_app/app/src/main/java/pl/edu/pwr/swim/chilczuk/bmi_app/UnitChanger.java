@@ -10,7 +10,14 @@ public class UnitChanger {
         SIheight = 0f;
         IMPheight = 0f;
     }
-    
+
+    public UnitChanger(float SImass, float SIheight, float IMPmass, float IMPheight) {
+        this.SImass = SImass;
+        this.SIheight = SIheight;
+        this.IMPmass = IMPmass;
+        this.IMPheight = IMPheight;
+    }
+
     public void toIMP(float massKG, float heightCM){
         if (massKG != SImass){
             SImass = massKG;
