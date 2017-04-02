@@ -57,7 +57,7 @@
             android:layout_toRightOf="@+id/massTV"
             android:layout_below="@+id/RGmode"
             android:gravity="center"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:textColorHint="@color/hintColor"
 
             android:textSize="30sp" />

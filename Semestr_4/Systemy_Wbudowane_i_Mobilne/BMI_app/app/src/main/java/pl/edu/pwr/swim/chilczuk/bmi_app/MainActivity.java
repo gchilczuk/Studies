@@ -92,7 +92,8 @@ public class MainActivity extends AppCompatActivity {
         d = savedInstanceState.getFloat("UCIMPheight", 0f);
         unitChanger = new UnitChanger(a, b, c, d);
 
-        chooseCalc();
+        if (currentUnit.equals("SI")) SImode();
+        else if (currentUnit.equals("IMP")) IMPmode();
         reGetOfCurrent();
 //        toaster("BMI to: "+resultTV.getText().toString());
 
@@ -165,7 +166,8 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onSave() {
         reSetOnCurrent();
-        if (areCurrentOK()) {
+        try {
+            calc.countBMI(currentMass, currentHeight);
             SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences("remember", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPrefs.edit();
             editor.putString("mass", massET.getText().toString());
@@ -180,6 +182,15 @@ public class MainActivity extends AppCompatActivity {
 
             editor.commit();
             menuItemRestore.setEnabled(true);
+        } catch (InvalidMassException e) {
+            toaster(getString(R.string.ExcMass));
+        } catch (InvalidHeightException e) {
+            toaster(getString(R.string.ExcHeight));
+        } catch (IllegalArgumentException e) {
+            toaster(getString(R.string.ExcMassHeight));
+        } catch (Exception e) {
+            toaster(getString(R.string.ExcOther) + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -196,7 +207,8 @@ public class MainActivity extends AppCompatActivity {
         unitChanger = new UnitChanger(a, b, c, d);
 
         setCurrentUnit(sharedPrefs.getString("unit", "None"));
-        chooseCalc();
+        if (currentUnit.equals("SI")) SImode();
+        else if (currentUnit.equals("IMP")) IMPmode();
         if (!currentUnit.equals("None")) {
             massET.setText(sharedPrefs.getString("mass", ""));
             heightETp.setText(sharedPrefs.getString("height", ""));
@@ -211,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
 //            toaster(currentUnit + " | " + currentMass + " | " + currentHeight);
             currentBMI = calc.countBMI(currentMass, currentHeight);
             showBMIresult(currentBMI);
-
+            reSetOnCurrent();
             hideKeyboar(v);
 
         } catch (InvalidMassException e) {
@@ -267,7 +279,8 @@ public class MainActivity extends AppCompatActivity {
         if (mass != 0.0f) massET.setText(String.valueOf(mass));
         if (height != 0.0f) heightETp.setText(String.valueOf(height));
 //        toaster("afterModeChange");
-        if (mass != 0.0f && height != 0.0f) showBMIresult(calc.countBMI(mass, height));
+//        if (mass != 0.0f && height != 0.0f) showBMIresult(calc.countBMI(mass, height));
+        resultTV.setText("");
         reSetOnCurrent();
     }
 
@@ -338,27 +351,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void reGetOfCurrent() {
-        if (areCurrentOK()) {
+        if (calc.isValidMass(currentMass)) {
             massET.setText(String.valueOf(currentMass));
-            heightETp.setText(String.valueOf(currentHeight));
-//            toaster("reGetOfCurrent");
-            showBMIresult(currentBMI);
-//            toaster(currentBMI + "");
         }
+        if (calc.isValidHeight(currentHeight)) {
+            heightETp.setText(String.valueOf(currentHeight));
+        }
+//            toaster("reGetOfCurrent");
+        try {
+            showBMIresult(calc.countBMI(currentMass, currentHeight));
+        }catch (IllegalArgumentException e){
+            String s = "coś nie tak";
+        }
+//            showBMIresult(currentBMI);
+//            toaster(currentBMI + "");
     }
 
     float getMass() {
         float value = 0.0f;
         String massString = massET.getText().toString();
-        if (!massString.equals(""))
+        if (isValidNumber(massString)) {
             value = Float.valueOf(massString);
+        }
         return value;
     }
+
 
     float getHeight() {
         float value = 0.0f;
         String heightString = heightETp.getText().toString();
-        if (!heightString.equals(""))
+        if (isValidNumber(heightString))
             value = Float.valueOf(heightString);
         return value;
     }
@@ -372,8 +394,17 @@ public class MainActivity extends AppCompatActivity {
         }
         return value;
     }
+    boolean isValidNumber(String s){
+        boolean isOk = true;
+        try {
+            Float.valueOf(s);
+        } catch (Exception e){
+            isOk = false;
+        }
+        return isOk;
+    }
 
-    private boolean areCurrentOK() {
+    /*private boolean areCurrentOK() {
         boolean isOK = true;
         float tmp;
         try {
@@ -384,7 +415,7 @@ public class MainActivity extends AppCompatActivity {
             toaster("Current not ok "+e.getMessage());
         }
         return isOK;
-    }
+    }*/
 
 
     private int chooseColor(float BMI) {
