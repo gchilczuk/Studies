@@ -1,24 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Kalkulator BMI</string>
-    <string name="mass_info">Masa:</string>
-    <string name="height_info">Wzrost:</string>
-    <string name="submit_buttom">Oblicz BMI</string>
-    <string name="result_header">Twoje BMI wynosi:</string>
-    <string name="share_text">Moje BMI wynosi </string>
+    <string name="app_name">BMI Calculator</string>
+    <string name="mass_info">Weight:</string>
+    <string name="height_info">Height:</string>
+    <string name="submit_buttom">Calculate BMI</string>
+    <string name="result_header">Your BMI is:</string>
+    <string name="share_text">My BMI is </string>
 
-    <string name="menu_item_SI"> jednostki SI</string>
-    <string name="menu_item_IMP">jednostki IMP</string>
-    <string name="manu_item_SHARE">Udostępnij</string>
-    <string name="manu_item_SAVE">Zapisz dane</string>
-    <string name="manu_item_RESTORE">Wczytaj zapisane</string>
-    <string name="manu_item_AUTH">O Autorze</string>
+    <string name="menu_item_SI">SI units</string>
+    <string name="menu_item_IMP">IMP units</string>
+    <string name="manu_item_SHARE">Share</string>
+    <string name="manu_item_SAVE">Save</string>
+    <string name="manu_item_RESTORE">Restore</string>
+    <string name="manu_item_AUTH">Author</string>
 
     <string name="mass_hint_kg" translatable="false">[kg]</string>
     <string name="mass_hint_lb" translatable="false">[lb]</string>
     <string name="height_hint_m" translatable="false">[cm]</string>
     <string name="height_hint_in" translatable="false">[in]</string>
 
-    <string name="title_activity_author">Autor</string>
+    <string name="title_activity_author">Author</string>
     <string name="auth_descr">
         "Autor: Grzegorz Chilczuk \n\n"
 
@@ -26,10 +27,10 @@
 
         "Po wyłączeniu aplikacji zaleca się:"
     </string>
-    <string name="mail_fail">Wysłanie wiadomości email nie powiodło się</string>
+    <string name="mail_fail">Sending email faild</string>
 
-    <string name="ExcMass">Masa jest spoza zakresu</string>
-    <string name="ExcHeight">Wzrost jest spoza zakresu</string>
-    <string name="ExcMassHeight">Podane dane są nieprawidłowe</string>
-    <string name="ExcOther">Coś poszło nie tak</string>
+    <string name="ExcMass">Weight is out of range</string>
+    <string name="ExcHeight">Height is out of range</string>
+    <string name="ExcMassHeight">Data input is invalid</string>
+    <string name="ExcOther">Something gone wrong. Please send information to author.</string>
 </resources>
