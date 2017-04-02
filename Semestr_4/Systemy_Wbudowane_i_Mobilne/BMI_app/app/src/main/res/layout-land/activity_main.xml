@@ -48,7 +48,7 @@
         android:layout_below="@+id/RGmode"
         android:layout_toRightOf="@+id/massTV"
         android:gravity="center"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         android:textColorHint="@color/hintColor"
 
         android:textSize="30sp" />
@@ -88,12 +88,13 @@
 
     <TextView
         android:id="@+id/result_headerTV"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@+id/massET"
+        android:layout_alignParentRight="true"
         android:gravity="center"
         android:text="@string/result_header"
 
@@ -105,13 +106,13 @@
         android:layout_width="250dp"
         android:layout_height="wrap_content"
 
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/result_headerTV"
         android:layout_marginTop="18dp"
         android:gravity="center"
         android:textColorHint="@color/hintColor"
-        android:textSize="80sp" />
+        android:textSize="80sp"
+        android:layout_below="@+id/result_headerTV"
+        android:layout_toRightOf="@+id/massET"
+        android:layout_alignParentRight="true" />
 
 
 </RelativeLayout>

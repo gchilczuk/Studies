@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private String currentUnit;
     private Context context;
     private UnitChanger unitChanger = new UnitChanger();
-    private int tostVounter =0;
+//    private int tostVounter =0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
             onRestore();
         } else {
             SImode();
+            radioButtonSI.setChecked(true);
+            submitBtn.setEnabled(false);
         }
     }
 
@@ -119,11 +121,13 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.SHARE) {
-            String message = getString(R.string.share_text) + currentBMI;
-            Intent share = new Intent(Intent.ACTION_SEND);
-            share.setType("text/plain");
-            share.putExtra(Intent.EXTRA_TEXT, message);
-            startActivity(Intent.createChooser(share, "Share"));
+            if (getBMI() != 0f) {
+                String message = getString(R.string.share_text) + currentBMI;
+                Intent share = new Intent(Intent.ACTION_SEND);
+                share.setType("text/plain");
+                share.putExtra(Intent.EXTRA_TEXT, message);
+                startActivity(Intent.createChooser(share, "Share"));
+            }
         } else if (id == R.id.AUTH) {
             Intent intent = new Intent(this, AuthorActivity.class);
             startActivity(intent);
@@ -131,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
             onSave();
         } else if (id == R.id.RESTORE) {
             onRestore();
+            resultTV.setText("");
             /*toaster("teraz pobiorę tekst");
             massET.getText();
             massET.setHint("");*/
@@ -191,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
         unitChanger = new UnitChanger(a, b, c, d);
 
         setCurrentUnit(sharedPrefs.getString("unit", "None"));
+        chooseCalc();
         if (!currentUnit.equals("None")) {
             massET.setText(sharedPrefs.getString("mass", ""));
             heightETp.setText(sharedPrefs.getString("height", ""));
@@ -215,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (IllegalArgumentException e) {
             toaster(getString(R.string.ExcMassHeight));
         } catch (Exception e) {
-            toaster(getString(R.string.ExcOther) /*+ e.getMessage()*/);
+            toaster(getString(R.string.ExcOther) + e.getMessage());
             e.printStackTrace();
         }
 
@@ -280,9 +286,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void setCurrentUnit(String mode) {
         if (mode.equals("SI")) {
-            radioButtonSI.performClick();
+            currentUnit = "SI";
+            radioButtonSI.setChecked(true);
         } else if (mode.equals("IMP")) {
-            radioButtonIMP.performClick();
+            currentUnit = "IMP";
+            radioButtonIMP.setChecked(true);
         }
     }
 
@@ -372,6 +380,8 @@ public class MainActivity extends AppCompatActivity {
             tmp = calc.countBMI(currentMass, currentHeight);
         } catch (IllegalArgumentException e) {
             isOK = false;
+        } catch (Exception e){
+            toaster("Current not ok "+e.getMessage());
         }
         return isOK;
     }
@@ -403,7 +413,8 @@ public class MainActivity extends AppCompatActivity {
                 calc = new BMIforLBIN();
                 break;
             default:
-                toaster(getString(R.string.ExcOther));
+
+                toaster(currentUnit+getString(R.string.ExcOther));
         }
     }
 
