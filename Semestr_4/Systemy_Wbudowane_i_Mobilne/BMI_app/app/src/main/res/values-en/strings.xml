@@ -14,18 +14,13 @@
     <string name="manu_item_RESTORE">Restore</string>
     <string name="manu_item_AUTH">Author</string>
 
-    <string name="mass_hint_kg" translatable="false">[kg]</string>
-    <string name="mass_hint_lb" translatable="false">[lb]</string>
-    <string name="height_hint_m" translatable="false">[cm]</string>
-    <string name="height_hint_in" translatable="false">[in]</string>
-
     <string name="title_activity_author">Author</string>
     <string name="auth_descr">
-        "Autor: Grzegorz Chilczuk \n\n"
+        "Author: Grzegorz Chilczuk \n\n"
 
-        "Cel: nauczyć się czegoś fajnego \n \n"
+        "Aim: to learn something funny \n \n"
 
-        "Po wyłączeniu aplikacji zaleca się:"
+        "After closing application please bath your eyes:"
     </string>
     <string name="mail_fail">Sending email faild</string>
 
@@ -34,4 +29,5 @@
     <string name="ExcMassHeight">Data input is invalid</string>
     <string name="ExcOther">Something gone wrong. Please send information to author.</string>
     <string name="ShareEmpty">Nothing to share</string>
+
 </resources>

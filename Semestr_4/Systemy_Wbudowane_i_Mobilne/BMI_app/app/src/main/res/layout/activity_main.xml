@@ -1,101 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="10dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    tools:context="pl.edu.pwr.swim.chilczuk.bmi_app.MainActivity">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
-
-    <TextView
-        android:id="@+id/massTV"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:text="@string/mass_info"
-        android:textSize="30sp"
-        android:gravity="center"
-        android:textColorHint="@color/hintColor"
-
-        android:layout_alignParentLeft="true"
-        />
-
-    <EditText
-        android:id="@+id/massET"
-        android:layout_width="120dp"
-        android:layout_height="60dp"
-        android:textSize="30sp"
-        android:inputType="number"
-        android:gravity="center"
-        android:textColorHint="@color/hintColor"
-
-        android:layout_toRightOf="@+id/massTV"
-        />
-
-    <TextView
-        android:id="@+id/heightTV"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:text="@string/height_info"
-        android:textSize="30sp"
-        android:gravity="center"
-
-        android:layout_below="@+id/massTV"
-        android:layout_alignParentLeft="true"
-        />
-
-    <EditText
-        android:id="@+id/heightET"
-        android:layout_width="120dp"
-        android:layout_height="60dp"
-        android:textSize="30sp"
-        android:inputType="numberDecimal"
-        android:gravity="center"
-        android:textColorHint="@color/hintColor"
-
-        android:layout_toRightOf="@+id/heightTV"
-        android:layout_below="@+id/massET"
-        />
-
-    <Button
-        android:id="@+id/submit_button"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/submit_buttom"
-        android:textSize="30sp"
-
-        android:layout_below="@+id/heightTV"
-        android:layout_centerHorizontal="true"
-        />
-
-    <TextView
-        android:id="@+id/result_headerTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/result_header"
-        android:textSize="30sp"
-        android:layout_centerHorizontal="true"
+        android:layout_height="match_parent"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-
-        android:layout_below="@+id/submit_button"
-        />
-
-    <TextView
-        android:id="@+id/resultTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="80sp"
-        android:gravity="center"
-        android:textColorHint="@color/hintColor"
-
-        android:layout_below="@+id/result_headerTV"
-        android:layout_centerHorizontal="true"
-
-        />
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        tools:context="pl.edu.pwr.swim.chilczuk.bmi_app.MainActivity">
 
 
+        <RadioGroup
+            android:id="@+id/RGmode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            >
 
-</RelativeLayout>
+            <RadioButton
+                android:id="@+id/RBSI"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="@string/menu_item_SI"
+                android:onClick="onRadioButtonClicked"/>
+
+            <RadioButton
+                android:id="@+id/RBIMP"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="@string/menu_item_IMP"
+                android:onClick="onRadioButtonClicked"/>
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/massTV"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/RGmode"
+            android:gravity="center"
+            android:text="@string/mass_info"
+            android:textColorHint="@color/hintColor"
+
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/massET"
+            android:layout_width="220dp"
+            android:layout_height="60dp"
+            android:layout_toRightOf="@+id/massTV"
+            android:layout_below="@+id/RGmode"
+            android:gravity="center"
+            android:inputType="numberDecimal"
+            android:textColorHint="@color/hintColor"
+
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/heightTV"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/massTV"
+            android:gravity="center"
+
+            android:text="@string/height_info"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/heightET"
+            android:layout_width="220dp"
+            android:layout_height="60dp"
+            android:layout_below="@+id/massET"
+            android:layout_toRightOf="@+id/heightTV"
+            android:gravity="center"
+            android:inputType="numberDecimal"
+
+            android:textColorHint="@color/hintColor"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/submit_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/heightTV"
+            android:layout_centerHorizontal="true"
+            android:onClick="calculateBMI"
+
+            android:text="@string/submit_buttom"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/result_headerTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/submit_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/result_header"
+
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/resultTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/result_headerTV"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+
+            android:textColorHint="@color/hintColor"
+            android:textSize="80sp"
+
+            />
+
+
+    </RelativeLayout>
+</ScrollView>

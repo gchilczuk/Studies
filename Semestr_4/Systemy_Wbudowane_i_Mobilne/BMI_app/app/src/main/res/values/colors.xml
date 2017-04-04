@@ -2,8 +2,7 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-
+    <color name="colorAccent">#3B83BD</color>
     <color name="underweightIII">#E3D9C6</color>
     <color name="underweightII">#E6D690</color>
     <color name="underweightI">#F3DA0B</color>

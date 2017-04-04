@@ -1,7 +1,9 @@
 package pl.edu.pwr.swim.chilczuk.bmi_app;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,159 +12,462 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnTextChanged;
+
 
 public class MainActivity extends AppCompatActivity {
-
-    IBMI calc;
-    Button submit_button;
+    private IBMI calc;
+    @BindView(R2.id.resultTV)
     TextView resultTV;
-    EditText massET, heightETp;
-    Float defaultMass, defeaultHeight;
-    String bmiResultHint, massHint, heightHint;
-    Boolean no_error = true;
-    Context context;
+    @BindView(R2.id.massET)
+    EditText massET;
+    @BindView(R2.id.heightET)
+    EditText heightETp;
+    @BindView(R2.id.submit_button)
+    Button submitBtn;
+    @BindView(R2.id.RBSI)
+    RadioButton radioButtonSI;
+    @BindView(R2.id.RBIMP)
+    RadioButton radioButtonIMP;
+    MenuItem menuItemSave, menuItemRestore, menuItemShare;
 
-    private void SImode(){
-        defaultMass = 70.0f;
-        defeaultHeight = 1.8f;
-
-        massHint = getString(R.string.mass_hint_kg);
-        heightHint = getString(R.string.height_hint_m);
-
-        calc = new BMIforMKG();
-
-        setHints();
-    }
-
-    private void IMPmode(){
-        defaultMass = 154.0f;
-        defeaultHeight = 70.8f;
-
-        massHint = getString(R.string.mass_hint_lb);
-        heightHint = getString(R.string.height_hint_in);
-
-        calc = new BMIforLBIN();
-
-        setHints();
-    }
-
-    private void setHints(){
-        massET.getText().clear();
-        heightETp.getText().clear();
-        resultTV.setText("");
-
-        bmiResultHint = String.format("%.2f", calc.countBMI(defaultMass, defeaultHeight));
-        massET.setHint(massHint);
-        heightETp.setHint(heightHint);
-        resultTV.setHint(bmiResultHint);
-    }
-
-    private void showBMIresult(float bmiResult){
-        CharSequence bmiResCSeq = String.format("%.2f",bmiResult);
-        resultTV.setText(bmiResCSeq);
-        resultTV.setTextColor(chooseColor(bmiResult));
-    }
-
-    private int chooseColor(float BMI){
-        int color;
-        if (BMI < 15) color = ContextCompat.getColor(context, R.color.underweightIII);
-        else if (15.0f <= BMI && BMI < 16.0f) color = ContextCompat.getColor(context, R.color.underweightII);
-        else if (16.0f <= BMI && BMI < 18.5f) color = ContextCompat.getColor(context, R.color.underweightI);
-        else if (18.5f <= BMI && BMI < 25) color = ContextCompat.getColor(context, R.color.normalWeight);
-        else if (25 <= BMI && BMI < 30) color = ContextCompat.getColor(context, R.color.overweight);
-        else if (30 <= BMI && BMI < 35) color = ContextCompat.getColor(context, R.color.obessI);
-        else if (35 <= BMI && BMI < 40) color = ContextCompat.getColor(context, R.color.obessII);
-        else if (40 < BMI) color = ContextCompat.getColor(context, R.color.obessIII);
-        else  color = ContextCompat.getColor(context, R.color.black);
-        return color;
-    }
-
-
+    private Float currentMass, currentHeight, currentBMI;
+    private String massHint, heightHint;
+    private String currentUnit;
+    private Context context;
+    private UnitChanger unitChanger = new UnitChanger();
+//    private int tostVounter =0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        currentUnit = "None";
+
         setContentView(R.layout.activity_main);
         context = getApplicationContext();
-        submit_button = (Button) findViewById(R.id.submit_button);
-        resultTV = (TextView) findViewById(R.id.resultTV);
-        massET = (EditText) findViewById(R.id.massET);
-        heightETp = (EditText) findViewById(R.id.heightET);
+        ButterKnife.bind(this);
 
-        SImode();
-
-        View.OnClickListener listener = createOnClickListener();
-        submit_button.setOnClickListener(listener);
+        if (isSomethingSaved()) {
+            onRestore();
+        } else {
+            SImode();
+            radioButtonSI.setChecked(true);
+            submitBtn.setEnabled(false);
+        }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        reSetOnCurrent();
+        outState.putFloat("mass", currentMass);
+        outState.putFloat("height", currentHeight);
+        outState.putString("unit", currentUnit);
+        outState.putFloat("BMI", currentBMI);
+
+        outState.putFloat("UCSImass", unitChanger.getSImass());
+        outState.putFloat("UCSIheight", unitChanger.getSIheight());
+        outState.putFloat("UCIMPmass", unitChanger.getIMPmass());
+        outState.putFloat("UCIMPheight", unitChanger.getIMPheight());
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        currentMass = savedInstanceState.getFloat("mass");
+        currentHeight = savedInstanceState.getFloat("height");
+        setCurrentUnit(savedInstanceState.getString("unit"));
+        currentBMI = savedInstanceState.getFloat("BMI");
+
+        float a, b, c, d;
+        a = savedInstanceState.getFloat("UCSImass", 0f);
+        b = savedInstanceState.getFloat("UCSIheight", 0f);
+        c = savedInstanceState.getFloat("UCIMPmass", 0f);
+        d = savedInstanceState.getFloat("UCIMPheight", 0f);
+        unitChanger = new UnitChanger(a, b, c, d);
+
+        if (currentUnit.equals("SI")) SImode();
+        else if (currentUnit.equals("IMP")) IMPmode();
+        reGetOfCurrent();
+//        toaster("BMI to: "+resultTV.getText().toString());
+
+        super.onRestoreInstanceState(savedInstanceState);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.actions, menu);
+        menuItemSave = menu.findItem(R.id.SAVE);
+        menuItemRestore = menu.findItem(R.id.RESTORE);
+//        menuItemShare = menu.findItem(R.id.SHARE);
+        if (isSomethingSaved()) {
+            menuItemRestore.setEnabled(true);
+        } else menuItemRestore.setEnabled(false);
+        if (getMass() == 0f || getHeight() == 0f) {
+            if (menuItemSave != null) menuItemSave.setEnabled(false);
+        } else if (getMass() > 0f && getHeight() > 0f) {
+            if (menuItemSave != null) menuItemSave.setEnabled(true);
+        }
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.MI_SI) {
-            SImode();
-            return true;
-        }else if(id == R.id.MI_IMP){
-            IMPmode();
-            return true;
+        if (id == R.id.SHARE) {
+            if (getBMI() != 0f) {
+                String message = getString(R.string.share_text) + currentBMI;
+                Intent share = new Intent(Intent.ACTION_SEND);
+                share.setType("text/plain");
+                share.putExtra(Intent.EXTRA_TEXT, message);
+                startActivity(Intent.createChooser(share, "Share"));
+            } else {
+                toaster(getString(R.string.ShareEmpty));
+            }
+        } else if (id == R.id.AUTH) {
+            Intent intent = new Intent(this, AuthorActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.SAVE) {
+            onSave();
+        } else if (id == R.id.RESTORE) {
+            onRestore();
+            resultTV.setText("");
+            /*toaster("teraz pobiorę tekst");
+            massET.getText();
+            massET.setHint("");*/
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private View.OnClickListener createOnClickListener(){
-        return new View.OnClickListener() {
-            float bmi_result, massF, heightF;
-            Toast toast;
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-
-            private void getValues(){
-                massF = Float.valueOf(massET.getText().toString());
-                heightF = Float.valueOf(heightETp.getText().toString());
-            }
-
-            public void onClick(View v) {
-                try {
-                    no_error = true;
-                    getValues();
-                    bmi_result = calc.countBMI(massF, heightF);
-                    showBMIresult(bmi_result);
-
-                    if (no_error)  imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-
-                } catch (NumberFormatException e){
-                    toast = Toast.makeText(context, "Please input value", Toast.LENGTH_SHORT);
-                    toast.show();
-                } catch (IllegalArgumentException e){
-                    toast = Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT);
-                    toast.show();
-                } catch (Exception e){
-                    toast = Toast.makeText(context, "Something gone wrong", Toast.LENGTH_SHORT);
-                    toast.show();
-                } finally {
-                    no_error = false;
-                }
-            }
-        };
+    public void onRadioButtonClicked(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+        switch (view.getId()) {
+            case R.id.RBIMP:
+                if (checked)
+                    changeToIMP();
+                break;
+            case R.id.RBSI:
+                if (checked)
+                    changeToSI();
+                break;
+        }
     }
+
+   /* @OnTextChanged(R2.id.resultTV)
+    public void bmichanged(){
+        toaster("BMI teraz wynosi: "+getBMI());
+    }*/
+
+    protected void onSave() {
+        reSetOnCurrent();
+        try {
+            calc.countBMI(currentMass, currentHeight);
+            SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences("remember", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPrefs.edit();
+            editor.putString("mass", massET.getText().toString());
+            editor.putString("height", heightETp.getText().toString());
+            editor.putString("unit", currentUnit);
+            editor.putBoolean("saved", true);
+
+            editor.putFloat("UCSImass", unitChanger.getSImass());
+            editor.putFloat("UCSIheight", unitChanger.getSIheight());
+            editor.putFloat("UCIMPmass", unitChanger.getIMPmass());
+            editor.putFloat("UCIMPheight", unitChanger.getIMPheight());
+
+            editor.commit();
+            menuItemRestore.setEnabled(true);
+        } catch (InvalidMassException e) {
+            toaster(getString(R.string.ExcMass));
+        } catch (InvalidHeightException e) {
+            toaster(getString(R.string.ExcHeight));
+        } catch (IllegalArgumentException e) {
+            toaster(getString(R.string.ExcMassHeight));
+        } catch (Exception e) {
+            toaster(getString(R.string.ExcOther) + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    protected void onRestore() {
+        SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences("remember", Context.MODE_PRIVATE);
+        if (!sharedPrefs.getBoolean("saved", false))
+            throw new IllegalStateException("Nothing to restore!");
+
+        float a, b, c, d;
+        a = sharedPrefs.getFloat("UCSImass", 0f);
+        b = sharedPrefs.getFloat("UCSIheight", 0f);
+        c = sharedPrefs.getFloat("UCIMPmass", 0f);
+        d = sharedPrefs.getFloat("UCIMPheight", 0f);
+        unitChanger = new UnitChanger(a, b, c, d);
+
+        setCurrentUnit(sharedPrefs.getString("unit", "None"));
+        if (currentUnit.equals("SI")) SImode();
+        else if (currentUnit.equals("IMP")) IMPmode();
+        if (!currentUnit.equals("None")) {
+            massET.setText(sharedPrefs.getString("mass", ""));
+            heightETp.setText(sharedPrefs.getString("height", ""));
+//            toaster("setCurrentUnit");
+            reSetOnCurrent();
+        }
+    }
+
+    public void calculateBMI(View v) {
+        try {
+            reSetOnCurrent();
+//            toaster(currentUnit + " | " + currentMass + " | " + currentHeight);
+            currentBMI = calc.countBMI(currentMass, currentHeight);
+            showBMIresult(currentBMI);
+            reSetOnCurrent();
+            hideKeyboar(v);
+
+        } catch (InvalidMassException e) {
+            toaster(getString(R.string.ExcMass));
+        } catch (InvalidHeightException e) {
+            toaster(getString(R.string.ExcHeight));
+        } catch (IllegalArgumentException e) {
+            toaster(getString(R.string.ExcMassHeight));
+        } catch (Exception e) {
+            toaster(getString(R.string.ExcOther) + e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
+
+    private void SImode() {
+        massHint = getString(R.string.mass_hint_kg);
+        heightHint = getString(R.string.height_hint_m);
+        currentUnit = "SI";
+        chooseCalc();
+        setHints();
+    }
+
+    private void IMPmode() {
+        massHint = getString(R.string.mass_hint_lb);
+        heightHint = getString(R.string.height_hint_in);
+        currentUnit = "IMP";
+        chooseCalc();
+        setHints();
+    }
+
+    private void changeToSI() {
+        if (!currentUnit.equals("SI")) {
+            unitChanger.toSI(getMass(), getHeight());
+            float newMass = unitChanger.getSImass();
+            float newHeight = unitChanger.getSIheight();
+            SImode();
+            afterModeChange(newMass, newHeight);
+        }
+    }
+
+    private void changeToIMP() {
+        if (!currentUnit.equals("IMP")) {
+            unitChanger.toIMP(getMass(), getHeight());
+            float newMass = unitChanger.getIMPmass();
+            float newHeight = unitChanger.getIMPheight();
+            IMPmode();
+            afterModeChange(newMass, newHeight);
+        }
+    }
+
+    private void afterModeChange(float mass, float height) {
+        if (mass != 0.0f) massET.setText(String.valueOf(mass));
+        if (height != 0.0f) heightETp.setText(String.valueOf(height));
+//        toaster("afterModeChange");
+//        if (mass != 0.0f && height != 0.0f) showBMIresult(calc.countBMI(mass, height));
+        resultTV.setText("");
+        reSetOnCurrent();
+    }
+
+
+    @OnTextChanged({R2.id.massET, R2.id.heightET})
+    public void onInputTextChange() {
+        if (getMass() == 0f || getHeight() == 0f) {
+            if (submitBtn != null) submitBtn.setEnabled(false);
+            if (menuItemSave != null) menuItemSave.setEnabled(false);
+        } else if (getMass() > 0f && getHeight() > 0f) {
+            if (submitBtn != null) submitBtn.setEnabled(true);
+            if (menuItemSave != null) menuItemSave.setEnabled(true);
+        }
+//        toaster("tekst changed: "+getMass()+" | "+getHeight());
+    }
+
+    private void setCurrentUnit(String mode) {
+        if (mode.equals("SI")) {
+            currentUnit = "SI";
+            radioButtonSI.setChecked(true);
+        } else if (mode.equals("IMP")) {
+            currentUnit = "IMP";
+            radioButtonIMP.setChecked(true);
+        }
+    }
+
+    /*
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ################################################################################################
+    ####################################### ↓ Should be ok ↓ #######################################
+    ################################################################################################
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    */
+
+    private boolean isSomethingSaved() {
+        SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences("remember", Context.MODE_PRIVATE);
+        return sharedPrefs.contains("saved");
+    }
+
+    private void setHints() {
+        massET.setHint(massHint);
+        heightETp.setHint(heightHint);
+    }
+
+    private void showBMIresult(float bmiResult) {
+        CharSequence bmiResCSeq = String.format("%.2f", bmiResult);
+        resultTV.setText(bmiResCSeq);
+        resultTV.setTextColor(chooseColor(bmiResult));
+    }
+
+    private void toaster(String text) {
+        Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+        toast.show();
+        /*tostVounter+=1;
+        toast = Toast.makeText(context, "tost nr "+tostVounter, Toast.LENGTH_SHORT);
+        toast.show();*/
+    }
+
+    private void hideKeyboar(View v) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
+
+    private void reSetOnCurrent() {
+        currentMass = getMass();
+        currentHeight = getHeight();
+        currentBMI = getBMI();
+    }
+
+    private void reGetOfCurrent() {
+        if (calc.isValidMass(currentMass)) {
+            massET.setText(String.valueOf(currentMass));
+        }
+        if (calc.isValidHeight(currentHeight)) {
+            heightETp.setText(String.valueOf(currentHeight));
+        }
+//            toaster("reGetOfCurrent");
+        try {
+            showBMIresult(calc.countBMI(currentMass, currentHeight));
+        }catch (IllegalArgumentException e){
+            String s = "coś nie tak";
+        }
+//            showBMIresult(currentBMI);
+//            toaster(currentBMI + "");
+    }
+
+    float getMass() {
+        float value = 0.0f;
+        String massString = massET.getText().toString();
+        if (isValidNumber(massString)) {
+            value = Float.valueOf(massString);
+        }
+        return value;
+    }
+
+
+    float getHeight() {
+        float value = 0.0f;
+        String heightString = heightETp.getText().toString();
+        if (isValidNumber(heightString))
+            value = Float.valueOf(heightString);
+        return value;
+    }
+
+    float getBMI() {
+        float value = 0.0f;
+        String BMIString = resultTV.getText().toString();
+        if (!BMIString.equals("")) {
+            BMIString = BMIString.replace(',', '.');
+            value = Float.valueOf(BMIString);
+        }
+        return value;
+    }
+    boolean isValidNumber(String s){
+        boolean isOk = true;
+        try {
+            Float.valueOf(s);
+        } catch (Exception e){
+            isOk = false;
+        }
+        return isOk;
+    }
+
+    /*private boolean areCurrentOK() {
+        boolean isOK = true;
+        float tmp;
+        try {
+            tmp = calc.countBMI(currentMass, currentHeight);
+        } catch (IllegalArgumentException e) {
+            isOK = false;
+        } catch (Exception e){
+            toaster("Current not ok "+e.getMessage());
+        }
+        return isOK;
+    }*/
+
+
+    private int chooseColor(float BMI) {
+        int color;
+        if (BMI < 15) color = ContextCompat.getColor(context, R.color.underweightIII);
+        else if (15.0f <= BMI && BMI < 16.0f)
+            color = ContextCompat.getColor(context, R.color.underweightII);
+        else if (16.0f <= BMI && BMI < 18.5f)
+            color = ContextCompat.getColor(context, R.color.underweightI);
+        else if (18.5f <= BMI && BMI < 25)
+            color = ContextCompat.getColor(context, R.color.normalWeight);
+        else if (25 <= BMI && BMI < 30) color = ContextCompat.getColor(context, R.color.overweight);
+        else if (30 <= BMI && BMI < 35) color = ContextCompat.getColor(context, R.color.obessI);
+        else if (35 <= BMI && BMI < 40) color = ContextCompat.getColor(context, R.color.obessII);
+        else if (40 <= BMI) color = ContextCompat.getColor(context, R.color.obessIII);
+        else color = ContextCompat.getColor(context, R.color.black);
+        return color;
+    }
+
+    private void chooseCalc() {
+        switch (currentUnit) {
+            case "SI":
+                calc = new BMIforMKG();
+                break;
+            case "IMP":
+                calc = new BMIforLBIN();
+                break;
+            default:
+
+                toaster(currentUnit+getString(R.string.ExcOther));
+        }
+    }
+
+
+    // pamiętanie raz wpisanych danych
+    // button zapisywania | ma być aktywny tylko przy aktywnych danych
+    // button share wyszeruj np na fb (intent) | aktywne gdy wyliczony wynik
+
     // dodatkowo
-    // butter knife zamiast findViewById
     // test UI przy użyciu jakiegoś frameworka: robotium, espresso albo apium
     // 1 test w espresso
 
+    // DONE
+
+    // osobna ACTIVITY about_autor
+    // a tam: Image_view ze zdjęciem
+    // otwierane z apki, dowolny layout
+
+
+    // butter knife zamiast findViewById
+    // każda aktywność ma reagować na rotacje
 }
