@@ -28,4 +28,6 @@
     <string name="ExcHeight">Height is out of range</string>
     <string name="ExcMassHeight">Data input is invalid</string>
     <string name="ExcOther">Something gone wrong. Please send information to author.</string>
+    <string name="ShareEmpty">Nothing to share</string>
+
 </resources>

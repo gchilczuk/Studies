@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     RadioButton radioButtonSI;
     @BindView(R2.id.RBIMP)
     RadioButton radioButtonIMP;
-    MenuItem menuItemSave, menuItemRestore;
+    MenuItem menuItemSave, menuItemRestore, menuItemShare;
 
     private Float currentMass, currentHeight, currentBMI;
     private String massHint, heightHint;
@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.actions, menu);
         menuItemSave = menu.findItem(R.id.SAVE);
         menuItemRestore = menu.findItem(R.id.RESTORE);
+//        menuItemShare = menu.findItem(R.id.SHARE);
         if (isSomethingSaved()) {
             menuItemRestore.setEnabled(true);
         } else menuItemRestore.setEnabled(false);
@@ -128,6 +129,8 @@ public class MainActivity extends AppCompatActivity {
                 share.setType("text/plain");
                 share.putExtra(Intent.EXTRA_TEXT, message);
                 startActivity(Intent.createChooser(share, "Share"));
+            } else {
+                toaster(getString(R.string.ShareEmpty));
             }
         } else if (id == R.id.AUTH) {
             Intent intent = new Intent(this, AuthorActivity.class);

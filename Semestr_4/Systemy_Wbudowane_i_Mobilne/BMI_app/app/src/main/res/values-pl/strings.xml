@@ -27,4 +27,6 @@
     <string name="ExcHeight">Wzrost jest spoza zakresu</string>
     <string name="ExcMassHeight">Podane dane są nieprawidłowe</string>
     <string name="ExcOther">Coś poszło nie tak</string>
+    <string name="ShareEmpty">Nie ma nic do udostępnienia</string>
+
 </resources>
