@@ -28,6 +28,7 @@ class MoviesAdapter(private val moviesList: List<Movie>) : RecyclerView.Adapter<
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val movie = moviesList[position]
+        holder.title.
         holder.title.text = movie.title
         holder.genre.text = movie.genre
         holder.year.text = movie.year

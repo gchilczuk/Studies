@@ -46,5 +46,5 @@ class RecyclerTouchListener(context: Context, recyclerView: RecyclerView, privat
     override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
 
     override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
-    
+
 }

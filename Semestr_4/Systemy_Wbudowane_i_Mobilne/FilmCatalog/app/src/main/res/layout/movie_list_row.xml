@@ -31,8 +31,11 @@
         android:id="@+id/TVMyear"
         android:textColor="@color/year"
         android:layout_width="wrap_content"
+        android:layout_toRightOf="@+id/TVMtitle"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_height="wrap_content" />
+
+    
 
 </RelativeLayout>
