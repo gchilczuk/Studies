@@ -37,20 +37,18 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        recycler_view.addOnItemTouchListener(RecyclerTouchListener(applicationContext, recycler_view, ClickListenerr()))
+        recycler_view.addOnItemTouchListener(RecyclerTouchListener(applicationContext, recycler_view, object : ClickListener{
+            override fun onClick(view: View, position: Int) {
+                val movie = movieList[position]
+                Toast.makeText(applicationContext, movie.title!! + " is selected!", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onLongClick(view: View, position: Int) {
+
+            }
+        }))
 
         prepareMovieData()
-    }
-
-    inner class ClickListenerr : ClickListener {
-        override fun onClick(view: View, position: Int) {
-            val movie = movieList[position]
-            Toast.makeText(applicationContext, movie.title!! + " is selected!", Toast.LENGTH_SHORT).show()
-        }
-
-        override fun onLongClick(view: View, position: Int) {
-
-        }
     }
 
     private fun prepareMovieData() {

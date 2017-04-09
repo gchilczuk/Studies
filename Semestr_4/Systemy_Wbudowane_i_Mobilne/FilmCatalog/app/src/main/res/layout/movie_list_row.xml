@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:focusable="true"
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
@@ -18,24 +18,34 @@
         android:textSize="16sp"
         android:textStyle="bold"
         android:layout_alignParentTop="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/TVMgenre"
-        android:layout_below="@id/TVMtitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"/>
 
     <TextView
         android:id="@+id/TVMyear"
         android:textColor="@color/year"
         android:layout_width="wrap_content"
-        android:layout_toRightOf="@+id/TVMtitle"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"/>
 
-    
+    <ImageView
+        android:id="@+id/Mimg"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/TVMtitle"
+        android:src="@drawable/oczu"
+        android:paddingLeft="5dp"
+        android:paddingStart="5dp"
+        android:paddingRight="5dp"
+        android:paddingEnd="5dp"
+
+        />
 
 </RelativeLayout>
