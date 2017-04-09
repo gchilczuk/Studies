@@ -1,20 +1,18 @@
 package pl.edu.pwr.swim.chilczuk.filmcatalog
 
+import android.content.Context
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.*
-import android.view.View
+import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-
-import java.util.ArrayList
-import android.widget.Toast
-import pl.edu.pwr.swim.chilczuk.filmcatalog.ClickListener
-
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -37,10 +35,10 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        recycler_view.addOnItemTouchListener(RecyclerTouchListener(applicationContext, recycler_view, object : ClickListener{
+        recycler_view.addOnItemTouchListener(RecyclerTouchListener(applicationContext, recycler_view, object : ClickListener {
             override fun onClick(view: View, position: Int) {
                 val movie = movieList[position]
-                Toast.makeText(applicationContext, movie.title!! + " is selected!", Toast.LENGTH_SHORT).show()
+                toast(movie.title!! + " is selected!")
             }
 
             override fun onLongClick(view: View, position: Int) {
@@ -117,9 +115,13 @@ class MainActivity : AppCompatActivity() {
 
 
         if (id == R.id.action_settings) {
+            toast("Not implemented")
             return true
         }
 
         return super.onOptionsItemSelected(item)
     }
 }
+
+
+fun Context.toast(message: CharSequence) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

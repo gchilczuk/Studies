@@ -25,27 +25,23 @@
         android:id="@+id/TVMgenre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"/>
+        android:layout_below="@+id/TVMtitle"/>
 
     <TextView
         android:id="@+id/TVMyear"
         android:textColor="@color/year"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"/>
+        android:layout_below="@+id/TVMtitle" />
 
     <ImageView
         android:id="@+id/Mimg"
         android:layout_width="100dp"
         android:layout_height="80dp"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/TVMtitle"
         android:src="@drawable/oczu"
         android:paddingLeft="5dp"
         android:paddingStart="5dp"
         android:paddingRight="5dp"
-        android:paddingEnd="5dp"
-
-        />
+        android:paddingEnd="5dp" />
 
 </RelativeLayout>

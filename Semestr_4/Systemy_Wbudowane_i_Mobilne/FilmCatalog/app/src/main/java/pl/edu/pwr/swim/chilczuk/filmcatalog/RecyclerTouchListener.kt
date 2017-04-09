@@ -1,11 +1,9 @@
 package pl.edu.pwr.swim.chilczuk.filmcatalog
 
-import android.view.MotionEvent
-import android.support.v7.widget.RecyclerView
-import android.R.attr.onClick
 import android.content.Context
-import android.text.method.Touch.onTouchEvent
+import android.support.v7.widget.RecyclerView
 import android.view.GestureDetector
+import android.view.MotionEvent
 import android.view.View
 
 
