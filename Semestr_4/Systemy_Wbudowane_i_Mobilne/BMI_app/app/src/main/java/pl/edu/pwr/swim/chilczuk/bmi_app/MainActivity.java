@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.SHARE) {
             if (getBMI() != 0f) {
-                String message = getString(R.string.share_text) + currentBMI;
+                String message = getString(R.string.share_text) + " " + currentBMI;
                 Intent share = new Intent(Intent.ACTION_SEND);
                 share.setType("text/plain");
                 share.putExtra(Intent.EXTRA_TEXT, message);

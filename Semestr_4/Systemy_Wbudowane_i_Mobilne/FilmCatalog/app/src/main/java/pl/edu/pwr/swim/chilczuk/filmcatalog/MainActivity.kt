@@ -27,15 +27,15 @@ class MainActivity : AppCompatActivity() {
 
         mAdapter = MoviesAdapter(movieList)
         val mLayoutManager = LinearLayoutManager(applicationContext)
-        recycler_view.layoutManager = mLayoutManager
-        recycler_view.itemAnimator = DefaultItemAnimator()
-        val divider = DividerItemDecoration(recycler_view.context, mLayoutManager.orientation)
-        recycler_view.addItemDecoration(divider)
-        recycler_view.adapter = mAdapter
+        RVmovielist.layoutManager = mLayoutManager
+        RVmovielist.itemAnimator = DefaultItemAnimator()
+        val divider = DividerItemDecoration(RVmovielist.context, mLayoutManager.orientation)
+        RVmovielist.addItemDecoration(divider)
+        RVmovielist.adapter = mAdapter
 
 
 
-        recycler_view.addOnItemTouchListener(RecyclerTouchListener(applicationContext, recycler_view, object : ClickListener {
+        RVmovielist.addOnItemTouchListener(RecyclerTouchListener(applicationContext, RVmovielist, object : ClickListener {
             override fun onClick(view: View, position: Int) {
                 val movie = movieList[position]
                 toast(movie.title!! + " is selected!")
