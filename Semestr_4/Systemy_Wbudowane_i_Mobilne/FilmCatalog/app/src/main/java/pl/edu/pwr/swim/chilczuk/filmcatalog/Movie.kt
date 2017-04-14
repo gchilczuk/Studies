@@ -1,15 +1,8 @@
 package pl.edu.pwr.swim.chilczuk.filmcatalog
 
-class Movie() {
-    var title: String? = null
-    var genre: String? = null
-    var year: String? = null
-    var imgID: Int = 0
+class Movie(var title:String,
+            var genre: String,
+            var year: String,
+            var imgID: Int = R.drawable.oczu) {}
 
-    constructor(title: String, genre: String, year: String, imgID: Int = R.drawable.oczu) : this() {
-        this.title = title
-        this.genre = genre
-        this.year = year
-        this.imgID = imgID
-    }
-}
+

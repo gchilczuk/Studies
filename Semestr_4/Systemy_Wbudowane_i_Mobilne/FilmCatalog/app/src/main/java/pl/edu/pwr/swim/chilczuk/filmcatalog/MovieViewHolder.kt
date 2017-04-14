@@ -4,9 +4,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import kotlinx.android.synthetic.main.movie_list_row_left.view.*
-import kotlinx.android.synthetic.main.movie_list_row_right.view.*
-import org.w3c.dom.Text
+import kotlinx.android.synthetic.main.movie_list_row_even.view.*
+import kotlinx.android.synthetic.main.movie_list_row_odd.view.*
 
 abstract class MovieViewHolder(view :View) : RecyclerView.ViewHolder(view){
     var movieTitle :TextView? = null
@@ -15,20 +14,21 @@ abstract class MovieViewHolder(view :View) : RecyclerView.ViewHolder(view){
     var movieImage :ImageView? = null
 
 }
-class MovieViewHolderLeft(view :View) : MovieViewHolder(view) {
+class MovieViewHolderEven(view :View) : MovieViewHolder(view) {
     init {
-        movieTitle = view.TVMtitleL
-        movieGenre = view.TVMgenreL
-        movieYear = view.TVMyearL
-        movieImage = view.MimgL
+        movieTitle = view.TVMtitleE
+        movieGenre = view.TVMgenreE
+        movieYear = view.TVMyearE
+        movieImage = view.MimgE
     }
 }
 
-class MovieViewHolderRight(view :View) : MovieViewHolder(view) {
+class MovieViewHolderOdd(view :View) : MovieViewHolder(view) {
     init {
-        movieTitle = view.TVMtitleR
-        movieGenre = view.TVMgenreR
-        movieYear = view.TVMyearR
-        movieImage = view.MimgR
+        movieTitle = view.TVMtitleO
+        movieGenre = view.TVMgenreO
+        movieYear = view.TVMyearO
+        movieImage = view.MimgO
     }
 }
+

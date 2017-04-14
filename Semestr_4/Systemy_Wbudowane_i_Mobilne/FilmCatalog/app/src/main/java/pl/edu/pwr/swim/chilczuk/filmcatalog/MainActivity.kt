@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         RVmovielist.addOnItemTouchListener(RecyclerTouchListener(applicationContext, RVmovielist, object : ClickListener {
             override fun onClick(view: View, position: Int) {
                 val movie = movieList[position]
-                toast(movie.title!! + " is selected!")
+                toast(movie.title + " is selected!")
             }
 
             override fun onLongClick(view: View, position: Int) {

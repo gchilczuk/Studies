@@ -2,41 +2,35 @@ package pl.edu.pwr.swim.chilczuk.filmcatalog
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.TextView
-import kotlinx.android.synthetic.main.movie_list_row_left.view.*
-import kotlinx.android.synthetic.main.movie_list_row_right.view.*
 import java.security.InvalidAlgorithmParameterException
 
 
 class MoviesAdapter(private val moviesList: List<Movie>) : RecyclerView.Adapter<MovieViewHolder>() {
-    val alignLeft = 0
-    val alignRight = 1
+    val EVEN = 0
+    val ODD = 1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val viewHolder : MovieViewHolder
         val inflater : LayoutInflater = LayoutInflater.from(parent.context)
         when (viewType) {
-            alignLeft-> {
-                val v1 = inflater.inflate(R.layout.movie_list_row_left, parent, false)
-                viewHolder = MovieViewHolderLeft(v1)
+            EVEN -> {
+                val v1 = inflater.inflate(R.layout.movie_list_row_even, parent, false)
+                viewHolder = MovieViewHolderEven(v1)
             }
-            alignRight -> {
-                val v2 = inflater.inflate(R.layout.movie_list_row_right, parent, false)
-                viewHolder = MovieViewHolderRight(v2)
+            ODD -> {
+                val v2 = inflater.inflate(R.layout.movie_list_row_odd, parent, false)
+                viewHolder = MovieViewHolderOdd(v2)
             }
             else -> {
-                throw InvalidAlgorithmParameterException("There are only '0' and '1' view types, but the parameter was "+viewType)
+                throw InvalidAlgorithmParameterException("Only '0' and '1'; given: "+viewType)
             }
         }
         return viewHolder
     }
 
     override fun getItemViewType(position: Int): Int {
-        return position%2
+        return position % 2
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
