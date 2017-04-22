@@ -11,6 +11,7 @@ interface ClickListener {
     fun onClick(view: View, position: Int)
 
     fun onLongClick(view: View, position: Int)
+    fun onFun(view: View, position: Int)
 }
 
 class RecyclerTouchListener(context: Context, recyclerView: RecyclerView, private val clickListener: ClickListener?) : RecyclerView.OnItemTouchListener {
@@ -20,15 +21,27 @@ class RecyclerTouchListener(context: Context, recyclerView: RecyclerView, privat
     init {
         gestureDetector = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
             override fun onSingleTapUp(e: MotionEvent): Boolean {
-                return true
+//                val child = recyclerView.findChildViewUnder(e.x, e.y)
+//                if (child != null && clickListener != null)
+//                    clickListener.onFun(child, recyclerView.getChildAdapterPosition(child))
+                return false
             }
-
             override fun onLongPress(e: MotionEvent) {
                 val child = recyclerView.findChildViewUnder(e.x, e.y)
                 if (child != null && clickListener != null) {
                     clickListener.onLongClick(child, recyclerView.getChildLayoutPosition(child))
                 }
             }
+
+            override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
+                val child = recyclerView.findChildViewUnder(e1!!.x, e1.y)
+                if (child != null && clickListener != null)
+                    clickListener.onFun(child, recyclerView.getChildAdapterPosition(child))
+                return false
+            }
+
+
+
         })
     }
 

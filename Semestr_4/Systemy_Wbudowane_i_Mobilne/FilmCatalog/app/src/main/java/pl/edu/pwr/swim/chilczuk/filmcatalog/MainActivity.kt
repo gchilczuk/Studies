@@ -1,6 +1,7 @@
 package pl.edu.pwr.swim.chilczuk.filmcatalog
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
@@ -39,10 +40,17 @@ class MainActivity : AppCompatActivity() {
             override fun onClick(view: View, position: Int) {
                 val movie = movieList[position]
                 toast(movie.title + " is selected!")
+                val intent = Intent(applicationContext, FilmDetail::class.java)
+                startActivity(intent)
             }
 
             override fun onLongClick(view: View, position: Int) {
+                toast("LLOOOOONG")
 
+            }
+
+            override fun onFun(view: View, position: Int) {
+                toast("FUUUUUUUUUN")
             }
         }))
 
