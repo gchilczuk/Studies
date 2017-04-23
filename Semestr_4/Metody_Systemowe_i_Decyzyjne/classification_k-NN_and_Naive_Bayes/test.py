@@ -53,6 +53,7 @@ class TestHamming(TestCase):
     def test_hamming_distance(self):
         data = test_data['hamming_distance']
         out = hamming_distance(data['X'], data['X_train'])
+        # print(data['Dist'])
         self.assertTrue((out == data['Dist']).all())
 
 
@@ -63,9 +64,11 @@ class TestSortTrainLabelsKNN(TestCase):
         self.assertTrue((out == data['y_sorted']).all())
 
 
+
 class TestPYXKNN(TestCase):
     def test_p_y_x_knn(self):
         data = test_data['p_y_x_KNN']
+        # print(data['p_y_x'])
         out = p_y_x_knn(data['y'], data['K'])
         max_diff = np.max(np.abs(data['p_y_x'] - out))
         self.assertAlmostEqual(max_diff, 0, 8)
