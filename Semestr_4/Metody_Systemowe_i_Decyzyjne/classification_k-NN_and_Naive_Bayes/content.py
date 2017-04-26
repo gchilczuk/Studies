@@ -10,9 +10,9 @@ from __future__ import division
 import numpy as np
 from utils import *
 from collections import Counter
+import scipy.spatial
 
-
-def hamming_distance(zbX, zbX_train):
+def hamming_distance(X, X_train):
     """
     :param X: zbior porownwanych obiektow N1xD
     :param X_train: zbior obiektow do ktorych porownujemy N2xD
@@ -24,23 +24,27 @@ def hamming_distance(zbX, zbX_train):
 
     def funfun(x):
         wyn = []
-        for xt in zbX_train.toarray():
+        for xt in X_train.toarray():
             wyn.append(sum(el1 != el2 for el1, el2 in zip (x.toarray(), xt)))
         # print(wyn)
         return wyn
 
 
     mac_wyn = []
-    for x in zbX.toarray():
+    for x in X.toarray():
         list_wyn = []
 
-        for xt in zbX_train.toarray():
+        for xt in X_train.toarray():
             list_wyn.append(sum(el1 != el2 for el1, el2 in zip (x, xt)))
 
         mac_wyn.append(list_wyn)
 
     return  np.array(mac_wyn)
-    # return np.array(map(funfun, zbX))
+    #
+    # X = X.toarray()
+    # X_train = X_train.toarray()
+    # return np.absolute(X.dot(X_train.T - 1) + (X - 1).dot(X_train.T))
+
 
 def sort_train_labels_knn(Dist, y):
     """
@@ -57,6 +61,7 @@ def sort_train_labels_knn(Dist, y):
     wartosci podobienstw odpowiadajacego wiersza macierzy
     Dist. Uzyc algorytmu mergesort.
     """
+
     result = []
     for distances in Dist.tolist():
         zipped = list(zip(distances,y))
@@ -75,6 +80,7 @@ def p_y_x_knn(y, k):
     :param k: liczba najblizszuch sasiadow dla KNN
     :return: macierz prawdopodobienstw dla obiektow z X
     """
+
     pmatrix = []
     for row in y:
         p_for_obj = []
@@ -92,6 +98,7 @@ def classification_error(p_y_x, y_true):
     Kazdy wiersz macierzy reprezentuje rozklad p(y|x)
     :return: blad klasyfikacji
     """
+
     def highest_p_class(seq):
         max = 0
         for i in range(1,4):
@@ -131,22 +138,20 @@ def model_selection_knn(Xval, Xtrain, yval, ytrain, k_values):
 
     return best_error, best_k, errors
 
-
-
+####
 
 def estimate_a_priori_nb(ytrain):
     """
     :param ytrain: etykiety dla dla danych treningowych 1xN
     :return: funkcja wyznacza rozklad a priori p(y) i zwraca p_y - wektor prawdopodobienstw a priori 1xM
     """
-    N = len(ytrain)
+    N = ytrain.shape[0]
     counter = Counter(ytrain)
     result = []
-    for i in range(1,len(counter)+1):
+    for i in range(1,5):
         result += [counter[i]/N]
 
     return np.array(result)
-
 
 def estimate_p_x_y_nb(Xtrain, ytrain, a, b):
     """
@@ -163,7 +168,7 @@ def estimate_p_x_y_nb(Xtrain, ytrain, a, b):
 
     divider = []
     counter = Counter(ytrain)
-    for i in range(1,5):
+    for i in range(1,M+1):
         divider += [counter[i]+a+b-2]
 
     # create empty matrix
@@ -177,11 +182,9 @@ def estimate_p_x_y_nb(Xtrain, ytrain, a, b):
         result[i] += a-1
         result[i] = result[i] / divider[i]
 
-    print(result)
+    # print(result)
 
     return result
-
-
 
 def p_y_x_nb(p_y, p_x_1_y, X):
     """
@@ -191,7 +194,35 @@ def p_y_x_nb(p_y, p_x_1_y, X):
     :return: funkcja wyznacza rozklad prawdopodobienstwa p(y|x) dla kazdej z klas z wykorzystaniem klasyfikatora Naiwnego
     Bayesa. Funkcja zwraca macierz p_y_x o wymiarach NxM.
     """
-    pass
+
+    M = p_x_1_y.shape[0]
+    D = X.shape[1]
+    X = X.toarray().tolist()
+
+    def small_p_x_y(ob_x, p_words_y):
+        pxy = 1
+        for word_index in range(D):
+            theta = p_words_y[word_index]
+            x = ob_x[word_index]
+            pxy *= theta**x * (1-theta)**(1-x)
+        return pxy
+
+    def small_p_y_x(ob_x):
+        liczniki = []
+        for kat in range(M):
+            liczniki += [small_p_x_y(ob_x, p_x_1_y[kat]) * p_y[kat]]
+        mianownik = sum(liczniki)
+
+        pyx = []
+        for licznik in liczniki:
+            pyx += [licznik / mianownik]
+        return pyx
+
+    p_y_x_matrix = []
+    for ob_x in X:
+        p_y_x_matrix += [small_p_y_x(ob_x)]
+
+    return np.array(p_y_x_matrix)
 
 
 def model_selection_nb(Xtrain, Xval, ytrain, yval, a_values, b_values):
@@ -207,4 +238,29 @@ def model_selection_nb(Xtrain, Xval, ytrain, yval, a_values, b_values):
     osiagniety blad, best_a - a dla ktorego blad byl najnizszy, best_b - b dla ktorego blad byl najnizszy,
     errors - macierz wartosci bledow dla wszystkich par (a,b)
     """
-    pass
+    p_y = estimate_a_priori_nb(ytrain)
+    error_best =  float('inf')
+    best_a = 0
+    best_b = 0
+
+    errors = []
+
+    i = -1
+    for a in a_values:
+        errors += [[]]
+        i += 1
+        for b in b_values:
+            epxy = estimate_p_x_y_nb(Xtrain,ytrain, a, b)
+            pyx = p_y_x_nb(p_y, epxy, Xval)
+            current_error = classification_error(pyx, yval)
+            errors[i] += [current_error]
+            if current_error < error_best:
+                best_a = a
+                best_b = b
+                error_best = current_error
+
+    return error_best, best_a, best_b, errors
+
+
+
+
