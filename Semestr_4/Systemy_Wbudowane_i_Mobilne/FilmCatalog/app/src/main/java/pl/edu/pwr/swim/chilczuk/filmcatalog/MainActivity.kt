@@ -41,7 +41,8 @@ class MainActivity : AppCompatActivity() {
                 val movie = movieList[position]
                 toast(movie.title + " is selected!")
                 val intent = Intent(applicationContext, FilmDetail::class.java)
-//                intent.putExtra("movieList",movieList)
+                intent.putExtra("title", movieList[position].title)
+                intent.putExtra("movie", movieList[position])
 //                intent.putExtra("position",position)
                 startActivity(intent)
             }

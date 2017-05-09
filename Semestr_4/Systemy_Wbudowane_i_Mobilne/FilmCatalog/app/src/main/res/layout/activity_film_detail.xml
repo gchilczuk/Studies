@@ -15,8 +15,8 @@
 
     <ImageView
         android:id="@+id/filmImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:srcCompat="@mipmap/ic_launcher"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
@@ -25,7 +25,11 @@
         android:layout_marginRight="16dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="16dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:layout_editor_absoluteY="23dp"
+        tools:layout_editor_absoluteX="63dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintVertical_bias="0.0" />
 
     <RatingBar
         android:id="@+id/ratingBar"
@@ -37,7 +41,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/ratingHeader"
         android:layout_marginLeft="16dp"
-        app:layout_constraintHorizontal_bias="0.685" />
+        app:layout_constraintHorizontal_bias="0.685"
+        android:numStars="5"/>
 
     <TextView
         android:id="@+id/ratingHeader"
@@ -51,5 +56,15 @@
         android:layout_marginTop="40dp"
         android:gravity="center"
         android:textAlignment="center"/>
+
+    <TextView
+        android:id="@+id/filmTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline" />
 
 </android.support.constraint.ConstraintLayout>
