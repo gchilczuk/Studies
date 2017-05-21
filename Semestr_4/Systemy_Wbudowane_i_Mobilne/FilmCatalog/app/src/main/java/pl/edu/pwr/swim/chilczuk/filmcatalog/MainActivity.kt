@@ -1,10 +1,8 @@
 package pl.edu.pwr.swim.chilczuk.filmcatalog
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.DividerItemDecoration
@@ -17,12 +15,10 @@ import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import java.io.Serializable
 
 
 class MainActivity : AppCompatActivity() {
-    val FILM_DETAIL = 1
-    private val movieList = mutableListOf<Movie>()
+    private val movieList = MoviesKeeper.movieList
     private var mAdapter: MoviesAdapter? = null
 
 
@@ -58,9 +54,8 @@ class MainActivity : AppCompatActivity() {
         RVmovielist.addOnItemTouchListener(RecyclerTouchListener(applicationContext, RVmovielist, object : ClickListener {
             override fun onClick(view: View, position: Int) {
                 val intent = Intent(applicationContext, FilmDetail::class.java)
-                intent.putExtra("position", position)
-                intent.putExtra("movies", movieList as Serializable)
-                startActivityForResult(intent, FILM_DETAIL)
+                MoviesKeeper.currentPosition = position
+                startActivity(intent)
             }
 
             override fun onLongClick(view: View, position: Int) {
@@ -72,42 +67,7 @@ class MainActivity : AppCompatActivity() {
                 toast("FUN :)")
             }
         }))
-        val wasMoviesSaved = savedInstanceState?.containsKey("movies")
-        if (wasMoviesSaved != null && wasMoviesSaved){
-            movieList.addAll(savedInstanceState?.getSerializable("movies") as MutableList<Movie>)
-        } else if (intent.extras != null){
-            movieList.addAll(intent.extras.getSerializable("movies") as MutableList<Movie>)
-            toast("MA: Są extrasy!")
-        } else {
-            movieList.addAll(loadMovieList())
-//            toast("fail odczytu onCreate $wasMoviesSaved")
-        }
         itemTouchHelper.attachToRecyclerView(RVmovielist);
-    }
-
-
-    override fun onSaveInstanceState(outState: Bundle?, persistableBundle: PersistableBundle) {
-        super.onSaveInstanceState(outState)
-        toast("OLABOGA persistantBundle!!!")
-        outState?.putSerializable("movies", movieList as Serializable)
-    }
-    override fun onSaveInstanceState(outState: Bundle?) {
-        super.onSaveInstanceState(outState)
-        outState?.putSerializable("movies", movieList as Serializable)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        toast("MA: onActRes with Cod = "+requestCode+", "+resultCode)
-        if (requestCode == FILM_DETAIL){
-            if (resultCode == Activity.RESULT_OK){
-                toast("MA: I'm OK!")
-                movieList.clear()
-                movieList.addAll(data!!.extras.getSerializable("movies") as MutableList<Movie>)
-                toast("MA: oAR "+movieList[1].rating+"<< rat|wat >>"+movieList[1].watched)
-            }
-        }
-        mAdapter?.notifyDataSetChanged()
-        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

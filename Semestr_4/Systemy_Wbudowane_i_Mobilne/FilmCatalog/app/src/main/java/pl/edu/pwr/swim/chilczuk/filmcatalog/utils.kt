@@ -1,5 +1,23 @@
 package pl.edu.pwr.swim.chilczuk.filmcatalog
 
+import android.app.Application
+
+class FCApplication(): Application(){
+    override fun onCreate() {
+        super.onCreate()
+        MoviesKeeper.initializeMovieList()
+    }
+}
+
+object MoviesKeeper{
+    var movieList: MutableList<Movie> = mutableListOf<Movie>()
+    var currentPosition: Int = 0
+    fun initializeMovieList(){
+            movieList.addAll(loadMovieList())
+    }
+}
+
+
 fun loadMovieList() : MutableList <Movie> {
     val movieList = mutableListOf<Movie>()
     movieList.add(Movie("Mad Max: Fury Road", "Action & Adventure", "2015"))
@@ -20,3 +38,4 @@ fun loadMovieList() : MutableList <Movie> {
     movieList.add(Movie("Guardians of the Galaxy", "Science Fiction & Fantasy", "2014"))
     return movieList
 }
+
