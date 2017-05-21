@@ -23,10 +23,8 @@ class FilmDetail : AppCompatActivity() {
         filmImage.setImageResource(movie.imgID)
         filmTitle.text = movie.title
         ratingBar.rating = movie.rating
+        filmDescription.text = movie.description
         ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser -> movie.rating = rating }
     }
-
-
-
 }
 

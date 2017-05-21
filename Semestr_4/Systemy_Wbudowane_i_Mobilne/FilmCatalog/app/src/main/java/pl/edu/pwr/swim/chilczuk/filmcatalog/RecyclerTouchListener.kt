@@ -9,9 +9,7 @@ import android.view.View
 
 interface ClickListener {
     fun onClick(view: View, position: Int)
-
     fun onLongClick(view: View, position: Int)
-    fun onFun(view: View, position: Int)
 }
 
 class RecyclerTouchListener(context: Context, recyclerView: RecyclerView, private val clickListener: ClickListener?) : RecyclerView.OnItemTouchListener {

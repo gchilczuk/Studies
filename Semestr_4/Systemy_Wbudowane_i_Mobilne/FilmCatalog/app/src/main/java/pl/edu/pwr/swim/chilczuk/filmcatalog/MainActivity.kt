@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     private var mAdapter: MoviesAdapter? = null
 
 
-    var simpleItemTouchCallback: ItemTouchHelper.SimpleCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+    var simpleItemTouchCallback: ItemTouchHelper.SimpleCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
         override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
             return false
@@ -62,24 +62,16 @@ class MainActivity : AppCompatActivity() {
                 movieList[position].watched = !movieList[position].watched
                 mAdapter?.notifyDataSetChanged()
             }
-
-            override fun onFun(view: View, position: Int) {
-                toast("FUN :)")
-            }
         }))
         itemTouchHelper.attachToRecyclerView(RVmovielist);
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         val id = item.itemId
 
 

@@ -3,4 +3,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_movie_detail">MovieDetail</string>
     <string name="ratingHeader">Your rate</string>
+    <string name="filmDescTitle">Description</string>
+    <string name="buttonMore">More</string>
 </resources>
