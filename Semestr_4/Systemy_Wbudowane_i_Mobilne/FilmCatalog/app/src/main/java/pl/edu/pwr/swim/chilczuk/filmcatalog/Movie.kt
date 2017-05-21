@@ -2,12 +2,9 @@ package pl.edu.pwr.swim.chilczuk.filmcatalog
 
 import java.io.Serializable
 
-class Movie(var title:String,
-            var genre: String,
-            var year: String,
-            var imgID: Int = R.drawable.oczu) : Serializable{
-    var rating:Float? = null
-}
-
-
-
+class Movie(val title: String,
+            val genre: String,
+            val year: String,
+            val imgID: Int = R.drawable.oczu,
+            var rating: Float = 0f,
+            var watched: Boolean = false) : Serializable

@@ -1,37 +1,68 @@
 package pl.edu.pwr.swim.chilczuk.filmcatalog
 
+import android.app.Activity
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import kotlinx.android.synthetic.main.activity_film_detail.*
+import java.io.Serializable
 import java.util.ArrayList
 
 class FilmDetail : AppCompatActivity() {
+    var allmovies : MutableList<Movie> = mutableListOf()
+    var position:Int = -1
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val title:String
-        val movie:Movie
         setContentView(R.layout.activity_film_detail)
-        filmImage.setImageResource(R.drawable.oczu)
+        val movie : Movie
         if (savedInstanceState == null){
             val extras = intent.extras
             if (extras == null){
-                title = "Such error"
-                movie = Movie("suchError", "suchError", "suchError", 0)
+
             } else {
-                title = extras.getString("title")
-                movie = extras.getSerializable("movie") as Movie
+                allmovies.addAll(extras.getSerializable("movies") as MutableList<Movie>)
+                position = extras.getInt("position")
             }
         } else {
-            title = savedInstanceState.getString("title")
-            movie = savedInstanceState.getSerializable("movie") as Movie
+            allmovies.addAll(savedInstanceState.getSerializable("movies") as MutableList<Movie>)
+            position = savedInstanceState.getInt("position")
+            toast("SAVED is NOT NULL")
         }
+        if (position == -1){
+            movie = Movie("suchError", "suchError", "suchError", 0)
+        } else movie = allmovies[position]
+
+
+        filmImage.setImageResource(movie.imgID)
         filmTitle.text = movie.title
-        if (movie.rating != null) {
-            ratingBar.rating = movie.rating as Float
-        }
-        ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser -> movie.rating = rating
-        filmTitle.text = rating.toString() + " | " + ratingBar.rating.toString() }
+        ratingBar.rating = movie.rating
+        ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser -> allmovies[position].rating = rating }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
+        toast("OLABOGA persistantBundle!!!")
+        super.onSaveInstanceState(outState, outPersistentState)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        outState?.putSerializable("movies", allmovies as Serializable)
+        outState?.putInt("position", position)
+        toast("zwykły Bundle!!!")
+        val intent = Intent(applicationContext,MainActivity::class.java)
+        intent.putExtra("movies", allmovies as Serializable)
+        setResult(Activity.RESULT_OK, intent)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onPause() {
+        val intent = Intent(applicationContext,MainActivity::class.java)
+        intent.putExtra("movies", allmovies as Serializable)
+        toast("oP "+allmovies[1].rating + allmovies[1].watched)
+        setResult(Activity.RESULT_OK, intent)
+        super.onPause()
 
     }
 

@@ -2,6 +2,7 @@ package pl.edu.pwr.swim.chilczuk.filmcatalog
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import java.security.InvalidAlgorithmParameterException
 
@@ -39,7 +40,9 @@ class MoviesAdapter(private val moviesList: List<Movie>) : RecyclerView.Adapter<
         holder.movieGenre?.text = movie.genre
         holder.movieYear?.text = movie.year
         holder.movieImage?.setImageResource(movie.imgID)
-
+        if (movie.watched)
+            holder.movieSeen?.visibility = View.VISIBLE
+        else  holder.movieSeen?.visibility = View.INVISIBLE
     }
 
     override fun getItemCount(): Int {

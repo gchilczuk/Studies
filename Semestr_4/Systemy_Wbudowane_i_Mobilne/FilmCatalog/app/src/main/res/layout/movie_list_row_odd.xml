@@ -52,6 +52,16 @@
         android:layout_below="@+id/TVMtitleO"
         android:textColor="@color/year" />
 
+    <ImageView
+        android:id="@+id/IVseenO"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/seen"
+        android:visibility="invisible"/>
+
 </RelativeLayout>
 
 

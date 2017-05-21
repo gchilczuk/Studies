@@ -1,8 +1,10 @@
 package pl.edu.pwr.swim.chilczuk.filmcatalog
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.DividerItemDecoration
@@ -13,12 +15,12 @@ import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import java.util.*
+import java.io.Serializable
 
 
 class MainActivity : AppCompatActivity() {
-
-    private val movieList = ArrayList<Movie>()
+    val FILM_DETAIL = 0
+    private val movieList = mutableListOf<Movie>()
     private var mAdapter: MoviesAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,82 +36,62 @@ class MainActivity : AppCompatActivity() {
         RVmovielist.addItemDecoration(divider)
         RVmovielist.adapter = mAdapter
 
-
-
         RVmovielist.addOnItemTouchListener(RecyclerTouchListener(applicationContext, RVmovielist, object : ClickListener {
             override fun onClick(view: View, position: Int) {
                 val movie = movieList[position]
                 toast(movie.title + " is selected!")
                 val intent = Intent(applicationContext, FilmDetail::class.java)
-                intent.putExtra("title", movieList[position].title)
-                intent.putExtra("movie", movieList[position])
+                intent.putExtra("position", position)
+                intent.putExtra("movies", movieList as Serializable)
 //                intent.putExtra("position",position)
-                startActivity(intent)
+                startActivityForResult(intent, FILM_DETAIL)
             }
 
             override fun onLongClick(view: View, position: Int) {
-                toast("LLOOOOONG")
-
+                movieList[position].watched = !movieList[position].watched
+                mAdapter?.notifyDataSetChanged()
+                toast("LONG")
             }
 
             override fun onFun(view: View, position: Int) {
-                toast("FUUUUUUUUUN")
+                toast("FUN :)")
             }
         }))
-
-        prepareMovieData()
+        val wasMoviesSaved = savedInstanceState?.containsKey("movies")
+        if (wasMoviesSaved != null && wasMoviesSaved){
+            movieList.addAll(savedInstanceState?.getSerializable("movies") as MutableList<Movie>)
+        } else if (intent.extras != null){
+            movieList.addAll(intent.extras.getSerializable("movies") as MutableList<Movie>)
+            toast("Są extrasy!")
+        } else {
+            toast("Nie ma extrasów!")
+            movieList.addAll(loadMovieList())
+//            toast("fail odczytu onCreate $wasMoviesSaved")
+        }
     }
 
-    private fun prepareMovieData() {
-        var movie = Movie("Mad Max: Fury Road", "Action & Adventure", "2015")
-        movieList.add(movie)
 
-        movie = Movie("Inside Out", "Animation, Kids & Family", "2015")
-        movieList.add(movie)
+    override fun onSaveInstanceState(outState: Bundle?, persistableBundle: PersistableBundle) {
+        super.onSaveInstanceState(outState)
+        toast("OLABOGA persistantBundle!!!")
+        outState?.putSerializable("movies", movieList as Serializable)
+    }
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState?.putSerializable("movies", movieList as Serializable)
+        toast("zamykamy kram")
+    }
 
-        movie = Movie("Star Wars: Episode VII - The Force Awakens", "Action", "2015")
-        movieList.add(movie)
-
-        movie = Movie("Shaun the Sheep", "Animation", "2015")
-        movieList.add(movie)
-
-        movie = Movie("The Martian", "Science Fiction & Fantasy", "2015")
-        movieList.add(movie)
-
-        movie = Movie("Mission: Impossible Rogue Nation", "Action", "2015")
-        movieList.add(movie)
-
-        movie = Movie("Up", "Animation", "2009")
-        movieList.add(movie)
-
-        movie = Movie("Star Trek", "Science Fiction", "2009")
-        movieList.add(movie)
-
-        movie = Movie("The LEGO Movie", "Animation", "2014")
-        movieList.add(movie)
-
-        movie = Movie("Iron Man", "Action & Adventure", "2008")
-        movieList.add(movie)
-
-        movie = Movie("Aliens", "Science Fiction", "1986")
-        movieList.add(movie)
-
-        movie = Movie("Chicken Run", "Animation", "2000")
-        movieList.add(movie)
-
-        movie = Movie("Back to the Future", "Science Fiction", "1985")
-        movieList.add(movie)
-
-        movie = Movie("Raiders of the Lost Ark", "Action & Adventure", "1981")
-        movieList.add(movie)
-
-        movie = Movie("Goldfinger", "Action & Adventure", "1965")
-        movieList.add(movie)
-
-        movie = Movie("Guardians of the Galaxy", "Science Fiction & Fantasy", "2014")
-        movieList.add(movie)
-
-        mAdapter?.notifyDataSetChanged()
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        toast(""+requestCode)
+        if (requestCode == FILM_DETAIL){
+            if (resultCode == Activity.RESULT_OK){
+                movieList.clear()
+                movieList.addAll(data!!.extras.getSerializable("movies") as MutableList<Movie>)
+                toast("oAR"+movieList[1].rating)
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

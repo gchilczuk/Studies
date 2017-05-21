@@ -12,6 +12,7 @@ abstract class MovieViewHolder(view :View) : RecyclerView.ViewHolder(view){
     var movieGenre :TextView? = null
     var movieYear :TextView? = null
     var movieImage :ImageView? = null
+    var movieSeen :ImageView? = null
 
 }
 class MovieViewHolderEven(view :View) : MovieViewHolder(view) {
@@ -20,6 +21,7 @@ class MovieViewHolderEven(view :View) : MovieViewHolder(view) {
         movieGenre = view.TVMgenreE
         movieYear = view.TVMyearE
         movieImage = view.MimgE
+        movieSeen = view.IVseenE
     }
 }
 
@@ -29,6 +31,7 @@ class MovieViewHolderOdd(view :View) : MovieViewHolder(view) {
         movieGenre = view.TVMgenreO
         movieYear = view.TVMyearO
         movieImage = view.MimgO
+        movieSeen = view.IVseenO
     }
 }
 
