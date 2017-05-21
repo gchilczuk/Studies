@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -19,9 +21,26 @@ import java.io.Serializable
 
 
 class MainActivity : AppCompatActivity() {
-    val FILM_DETAIL = 0
+    val FILM_DETAIL = 1
     private val movieList = mutableListOf<Movie>()
     private var mAdapter: MoviesAdapter? = null
+
+
+    var simpleItemTouchCallback: ItemTouchHelper.SimpleCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+
+        override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+            return false
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
+            val pos = viewHolder.adapterPosition
+            movieList.removeAt(pos)
+            mAdapter!!.notifyDataSetChanged()
+        }
+    }
+    var itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,19 +57,15 @@ class MainActivity : AppCompatActivity() {
 
         RVmovielist.addOnItemTouchListener(RecyclerTouchListener(applicationContext, RVmovielist, object : ClickListener {
             override fun onClick(view: View, position: Int) {
-                val movie = movieList[position]
-                toast(movie.title + " is selected!")
                 val intent = Intent(applicationContext, FilmDetail::class.java)
                 intent.putExtra("position", position)
                 intent.putExtra("movies", movieList as Serializable)
-//                intent.putExtra("position",position)
                 startActivityForResult(intent, FILM_DETAIL)
             }
 
             override fun onLongClick(view: View, position: Int) {
                 movieList[position].watched = !movieList[position].watched
                 mAdapter?.notifyDataSetChanged()
-                toast("LONG")
             }
 
             override fun onFun(view: View, position: Int) {
@@ -62,12 +77,12 @@ class MainActivity : AppCompatActivity() {
             movieList.addAll(savedInstanceState?.getSerializable("movies") as MutableList<Movie>)
         } else if (intent.extras != null){
             movieList.addAll(intent.extras.getSerializable("movies") as MutableList<Movie>)
-            toast("Są extrasy!")
+            toast("MA: Są extrasy!")
         } else {
-            toast("Nie ma extrasów!")
             movieList.addAll(loadMovieList())
 //            toast("fail odczytu onCreate $wasMoviesSaved")
         }
+        itemTouchHelper.attachToRecyclerView(RVmovielist);
     }
 
 
@@ -79,18 +94,19 @@ class MainActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         outState?.putSerializable("movies", movieList as Serializable)
-        toast("zamykamy kram")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        toast(""+requestCode)
+        toast("MA: onActRes with Cod = "+requestCode+", "+resultCode)
         if (requestCode == FILM_DETAIL){
             if (resultCode == Activity.RESULT_OK){
+                toast("MA: I'm OK!")
                 movieList.clear()
                 movieList.addAll(data!!.extras.getSerializable("movies") as MutableList<Movie>)
-                toast("oAR"+movieList[1].rating)
+                toast("MA: oAR "+movieList[1].rating+"<< rat|wat >>"+movieList[1].watched)
             }
         }
+        mAdapter?.notifyDataSetChanged()
         super.onActivityResult(requestCode, resultCode, data)
     }
 

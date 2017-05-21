@@ -29,7 +29,7 @@ class FilmDetail : AppCompatActivity() {
         } else {
             allmovies.addAll(savedInstanceState.getSerializable("movies") as MutableList<Movie>)
             position = savedInstanceState.getInt("position")
-            toast("SAVED is NOT NULL")
+            toast("FD: SAVED is NOT NULL")
         }
         if (position == -1){
             movie = Movie("suchError", "suchError", "suchError", 0)
@@ -39,6 +39,7 @@ class FilmDetail : AppCompatActivity() {
         filmImage.setImageResource(movie.imgID)
         filmTitle.text = movie.title
         ratingBar.rating = movie.rating
+        toast("FD: rB.r = "+ratingBar.rating + "and mo.r = "+movie.rating + " + wat = "+movie.watched)
         ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser -> allmovies[position].rating = rating }
     }
 
@@ -50,7 +51,7 @@ class FilmDetail : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle?) {
         outState?.putSerializable("movies", allmovies as Serializable)
         outState?.putInt("position", position)
-        toast("zwykły Bundle!!!")
+        toast("FD: oSIS zwykły Bundle!!!")
         val intent = Intent(applicationContext,MainActivity::class.java)
         intent.putExtra("movies", allmovies as Serializable)
         setResult(Activity.RESULT_OK, intent)
@@ -58,9 +59,9 @@ class FilmDetail : AppCompatActivity() {
     }
 
     override fun onPause() {
-        val intent = Intent(applicationContext,MainActivity::class.java)
+        val intent = Intent()
         intent.putExtra("movies", allmovies as Serializable)
-        toast("oP "+allmovies[1].rating + allmovies[1].watched)
+        toast("FD: oP: "+allmovies[1].rating +" ←rat|wat→ "+ allmovies[1].watched)
         setResult(Activity.RESULT_OK, intent)
         super.onPause()
 

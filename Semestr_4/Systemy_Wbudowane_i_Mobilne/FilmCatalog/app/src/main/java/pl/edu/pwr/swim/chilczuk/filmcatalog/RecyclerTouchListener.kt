@@ -33,13 +33,6 @@ class RecyclerTouchListener(context: Context, recyclerView: RecyclerView, privat
                     clickListener.onLongClick(child, recyclerView.getChildLayoutPosition(child))
                 }
             }
-
-            override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
-                val child = recyclerView.findChildViewUnder(e1!!.x, e1.y)
-//                if (child != null && clickListener != null)
-                    clickListener?.onFun(child, recyclerView.getChildAdapterPosition(child))
-                return false
-            }
         })
     }
 
