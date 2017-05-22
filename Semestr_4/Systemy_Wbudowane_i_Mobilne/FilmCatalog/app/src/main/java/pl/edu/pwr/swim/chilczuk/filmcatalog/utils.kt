@@ -44,7 +44,7 @@ fun loadDescriptions() : MutableList<String> {
     descList.add("Lorem ipsum dolor sit amet, consectetur adipiscing elit.   Curabitur lacinia mi at ex condimentum finibus. Quisque sit amet condimentum tellus. Sed aliquet turpis sit amet metus malesuada accumsan.")
     descList.add("Vestibulum feugiat nibh quis libero aliquam fermentum. Praesent viverra odio sit amet laoreet pellentesque.")
     descList.add("Phasellus nec odio mi. Nunc orci felis, ullamcorper vel augue eu, efficitur aliquam metus.  Nulla lectus orci, consequat eu placerat at, dignissim ut nisl. Sed a bibendum odio.")
-    descList.add("Sed aliquam luctus nibh id aliquam. Integer eleifend, libero a ultrices venenatis. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Duis varius tellus lectus, eget sollicitudin risus aliquam ullamcorper. Suspendisse euismod aliquet tortor sit amet sodales.")
+    descList.add("Sed aliquam luctus nibh id aliquam. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Duis varius tellus lectus, eget sollicitudin risus aliquam ullamcorper. Suspendisse euismod aliquet tortor sit amet sodales.")
     descList.add("Etiam tincidunt, augue ac scelerisque pulvinar, arcu lectus convallis ante. Curabitur at tortor leo. Nullam volutpat ligula in orci vulputate, et posuere massa tincidunt. Integer vitae mi neque.")
     descList.add("Etiam tincidunt, augue ac scelerisque pulvinar, arcu lectus convallis ante. Curabitur at tortor leo. Nullam volutpat ligula in orci vulputate, et posuere massa tincidunt. Integer vitae mi neque.")
     return descList
