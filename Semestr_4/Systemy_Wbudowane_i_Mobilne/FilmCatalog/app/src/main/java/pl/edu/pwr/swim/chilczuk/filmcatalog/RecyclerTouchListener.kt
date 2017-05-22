@@ -9,7 +9,6 @@ import android.view.View
 
 interface ClickListener {
     fun onClick(view: View, position: Int)
-
     fun onLongClick(view: View, position: Int)
 }
 
@@ -20,7 +19,10 @@ class RecyclerTouchListener(context: Context, recyclerView: RecyclerView, privat
     init {
         gestureDetector = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
             override fun onSingleTapUp(e: MotionEvent): Boolean {
-                return true
+                val child = recyclerView.findChildViewUnder(e.x, e.y)
+                if (child != null && clickListener != null)
+                    clickListener.onClick(child, recyclerView.getChildAdapterPosition(child))
+                return false
             }
 
             override fun onLongPress(e: MotionEvent) {
