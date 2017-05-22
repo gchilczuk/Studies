@@ -1,6 +1,7 @@
 package pl.edu.pwr.swim.chilczuk.filmcatalog
 
 import android.app.Fragment
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -32,5 +33,11 @@ class FilmDetail : AppCompatActivity() {
         ratingBar.rating = movie.rating
         filmDescription.text = movie.description
         ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser -> movie.rating = rating }
+        button.setOnClickListener(object: View.OnClickListener {
+            override fun onClick(view: View): Unit {
+                val intent = Intent(view.context, More::class.java)
+                view.context.startActivity(intent)
+            }
+        })
     }
 }

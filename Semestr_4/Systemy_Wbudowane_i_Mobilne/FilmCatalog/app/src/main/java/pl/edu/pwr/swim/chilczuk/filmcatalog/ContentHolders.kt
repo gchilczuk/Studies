@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import kotlinx.android.synthetic.main.movie_list_row_even.view.*
 import kotlinx.android.synthetic.main.movie_list_row_odd.view.*
+import kotlinx.android.synthetic.main.actor_row.view.*
 
 class Movie(val title: String,
             val genre: String,
@@ -13,6 +14,7 @@ class Movie(val title: String,
             val imgID: Int = R.drawable.oczu,
             val description: String = "Lorem ipsum dolor sit amet",
             val starring: List<Actor> = listOf(),
+            val moreimgs: List<Int> = listOf(),
             var rating: Float = 0f,
             var watched: Boolean = false)
 
@@ -51,7 +53,7 @@ class MovieViewHolderOdd(view : View) : MovieViewHolder(view) {
 }
 
 class ActorHolder(view : View) : RecyclerView.ViewHolder(view){
-//    val name : TextView =
-//    val surname : TextView =
-//    val image : ImageView =
+    val name : TextView = view.actorNameTV
+    val surname : TextView = view.actorSurnameTV
+    val image : ImageView = view.actorImgV
 }

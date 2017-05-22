@@ -21,6 +21,9 @@
         <activity android:name=".FilmDetail"
             android:parentActivityName=".MainActivity">
         </activity>
+        <activity android:name=".More"
+            android:parentActivityName=".FilmDetail">
+        </activity>
     </application>
 
 </manifest>
